@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật Quỳnh Nhi!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@400;500;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fffafb;
+            background-image: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path fill="%23fce4ec" fill-opacity="0.2" d="M20 0L22.45 17.55 40 20 22.45 22.45 20 40 17.55 22.45 0 20 17.55 17.55z"/></svg>'),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="8" fill="%23f8bbd0" fill-opacity="0.15"/></svg>');
+            background-position: 10% 20%, 80% 90%;
+            background-repeat: no-repeat;
+            overflow-x: hidden;
+        }
+        .font-dancing { font-family: 'Dancing Script', cursive; }
+        .font-handwriting { font-family: 'Patrick Hand', cursive; }
+        .fade-in { animation: fadeIn 1.5s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Intro Hộp quà (Thiết kế 3D mới) --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #fde2e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+            transition: opacity 1s ease-in-out .5s;
+        }
+        .gift-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            animation: floatGift 3s ease-in-out infinite;
+        }
+        @keyframes floatGift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .gift-box-base {
+            width: 220px; /* Rộng hơn */
+            height: 150px;
+            background: linear-gradient(#f48fb1, #f8bbd0);
+            position: absolute;
+            bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .gift-lid {
+            width: 240px; /* Rộng hơn */
+            height: 70px;
+            background: linear-gradient(#ec407a, #f06292);
+            position: absolute;
+            left: 50%; top: 60px;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), top 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 2;
+        }
+        .gift-ribbon-v {
+            position: absolute;
+            width: 25px;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .gift-bow {
+            position: absolute;
+            width: 120px; height: 120px;
+            left: 50%; top: 0;
+            transform: translateX(-50%);
+            z-index: 3;
+            transition: transform .5s ease, opacity .5s ease;
+        }
+        #intro-overlay.open .gift-lid { top: -150px; transform: translateX(-50%) rotate(-20deg); }
+        #intro-overlay.open .gift-bow { transform: translateX(-50%) scale(0); opacity: 0; }
+        
+        /* --- Music Player --- */
+        .music-player {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(236, 64, 122, 0.1), 0 8px 10px -6px rgba(236, 64, 122, 0.1);
+            max-width: 400px;
+            margin: 0 auto 2rem auto;
+        }
+        .progress-bar {
+            background-color: #fce4ec;
+            height: 6px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .progress {
+            background-color: #f06292;
+            height: 100%;
+            border-radius: 3px;
+        }
+        .player-controls button.play-btn {
+            background-color: #f06292;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+        .player-controls button.play-btn:hover {
+            background-color: #ec407a;
+        }
+
+        /* --- Lời chúc (Nút bấm mới) --- */
+        #showWishBtn { background: #f48fb1; color: white; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(236, 64, 122, 0.3); display: inline-block; }
+        #showWishBtn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(236, 64, 122, 0.4); }
+        #main-wish { display: none; }
+        #main-wish.typing::after { content: '|'; display: inline-block; animation: blink-caret 0.7s infinite; color: #f48fb1; }
+        @keyframes blink-caret { 50% { opacity: 0; } }
+
+        /* --- Lịch (Thiết kế mới) --- */
+        .calendar-container { width: 100%; max-width: 380px; }
+        .date-26-wrapper { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .static-heart { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #f48fb1; }
+        .static-heart-icon { width: 100%; height: 100%; }
+        .date-number { position: relative; z-index: 1; font-weight: bold; color: white; font-size: 1.1rem; }
+        .blinking-heart-outline { position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; transform: translate(-50%, -50%); animation: blink-heart 1.5s ease-in-out infinite; color: #f8bbd0; }
+        @keyframes blink-heart {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        /* --- Khoảnh khắc (Bố cục mới) --- */
+        .moments-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 220px;
+            margin: 3rem auto 0 auto;
+        }
+        .moment-photo {
+            position: absolute;
+            width: 120px;
+            height: 168px;
+            background-color: white;
+            padding: 8px;
+            border-radius: 4px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+        .moment-photo:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            z-index: 20 !important;
+        }
+        .moment-photo img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .moment-photo:nth-child(1) {
+            top: 0;
+            left: 10%;
+            transform: rotate(-12deg);
+            z-index: 1;
+        }
+        .moment-photo:nth-child(2) {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) scale(1.15);
+            z-index: 2;
+        }
+        .moment-photo:nth-child(3) {
+            top: 5px;
+            right: 10%;
+            transform: rotate(10deg);
+            z-index: 1;
+        }
+
+        @media (min-width: 768px) {
+            .moments-gallery { height: 320px; max-width: 600px; }
+            .moment-photo { width: 200px; height: 280px; padding: 12px; }
+            .moment-photo:nth-child(1) { left: 5%; }
+            .moment-photo:nth-child(3) { right: 5%; }
+        }
+
+        /* --- Image Lightbox --- */
+        #lightbox { position: fixed; z-index: 20000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; transition: opacity 0.3s ease; }
+        #lightbox.hidden { opacity: 0; pointer-events: none; }
+        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
+        #lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+
+        /* --- Modal & Nút Bí Mật (Thiết kế mới) --- */
+        #secretModal { transition: opacity 0.3s ease-in-out; }
+        #secretModal.hidden { pointer-events: none; opacity: 0; }
+        #secretModalContent {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            background-color: #fffdf9;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23f5f1ee" d="M0 0h100v1H0z" transform="translate(0 50)"/></svg>');
+            border: 1px solid #e8d7d7;
+            padding-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;
+        }
+        #secretModal.hidden #secretModalContent { transform: scale(0.95); opacity: 0; }
+        .secret-text-container {
+            overflow-y: auto;
+            flex-shrink: 1;
+            padding-right: 1rem;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .secret-text-container::-webkit-scrollbar {
+            display: none;
+        }
+        .secret-text { color: #4a423f; font-size: 1.6rem; line-height: 1.7; }
+        .secret-text p { margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <!-- Màn hình chờ hộp quà -->
+    <div id="intro-overlay">
+        <div class="gift-container">
+            <div class="gift-bow">
+                 <svg viewBox="0 0 100 100"><path d="M 50 50 C 30 -10, 0 10, 40 50 L 50 60 Z" fill="#f06292"/><path d="M 50 50 C 70 -10, 100 10, 60 50 L 50 60 Z" fill="#f06292"/><circle cx="50" cy="50" r="15" fill="#fce4ec"/></svg>
+            </div>
+            <div class="gift-lid"></div>
+            <div class="gift-box-base">
+                <div class="gift-ribbon-v"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nội dung chính -->
+    <main id="main-content" class="hidden">
+        <div class="container mx-auto px-4 py-8 md:py-16 max-w-5xl">
+            <header class="text-center mb-12 fade-in">
+                <h1 class="font-dancing text-5xl md:text-7xl text-pink-500 mb-2">Happy Birthday</h1>
+                <h2 class="text-3xl md:text-4xl font-bold text-pink-400">Lê Quỳnh Nhi</h2>
+            </header>
+
+            <!-- Ảnh và Lịch -->
+            <section class="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 mb-20">
+                <div class="main-photo-container w-64 h-80 md:w-80 md:h-[420px] rounded-lg bg-white p-4 shadow-xl transform -rotate-3 transition-transform hover:rotate-0 hover:scale-105 fade-in" style="animation-delay: 0.2s;">
+                    <img src="1.jpg" alt="Ảnh của Lê Quỳnh Nhi" class="w-full h-full object-cover border-2 border-gray-100">
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center fade-in calendar-container" style="animation-delay: 0.4s;">
+                    <h3 class="font-bold text-3xl text-pink-500 mb-4 border-b-2 border-dotted border-pink-200 pb-2">Tháng 7, 2025</h3>
+                    <div class="grid grid-cols-7 gap-y-3 gap-x-2 text-base place-items-center">
+                        <span class="text-gray-400 font-bold">T2</span><span class="text-gray-400 font-bold">T3</span><span class="text-gray-400 font-bold">T4</span><span class="text-gray-400 font-bold">T5</span><span class="text-gray-400 font-bold">T6</span><span class="text-gray-400 font-bold">T7</span><span class="text-gray-400 font-bold">CN</span>
+                        <span class="text-gray-300"></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                        <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                        <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+                        <span>21</span><span>22</span><span>23</span><span>24</span><span>25</span>
+                        <div class="date-26-wrapper">
+                            <div class="static-heart">
+                                <svg class="static-heart-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <span class="date-number">26</span>
+                            <div class="blinking-heart-outline">
+                                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                            </div>
+                        </div>
+                        <span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-500 font-dancing text-xl">Ngày đặc biệt của cậu</p>
+                </div>
+            </section>
+            
+            <!-- Music Player -->
+            <section class="fade-in" style="animation-delay: 0.5s;">
+                 <div class="music-player">
+                    <div class="mb-2 text-center">
+                        <p id="song-title" class="font-bold text-gray-800">Happy Birthday to You (Always 14)</p>
+                        <p id="artist-name" class="text-sm text-gray-500">AMEE x Hoàng Dũng x Obito x Hứa Kim Tuyền</p>
+                    </div>
+                    <div class="progress-bar mb-2">
+                        <div id="progress" class="progress"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500 mb-3">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                    <div class="player-controls flex items-center justify-center gap-6">
+                        <button id="play-pause-btn" class="play-btn flex items-center justify-center">
+                            <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 5.077a.5.5 0 01.816-.39l7.4 5.25a.5.5 0 010 .78l-7.4 5.25A.5.5 0 016.3 14.923V5.077z"/></svg>
+                            <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 4.5a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V5.25a.75.75 0 00-.75-.75H5.75zm6.5 0a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V5.25a.75.75 0 00-.75-.75h-1.5z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lời chúc -->
+            <section class="text-center my-16 fade-in" style="animation-delay: 0.6s;">
+                <button id="showWishBtn">💌 Nhận Lời Chúc 💌</button>
+                <p id="main-wish" class="font-dancing text-3xl md:text-4xl text-gray-600 leading-relaxed max-w-2xl mx-auto min-h-[100px]"></p>
+            </section>
+
+            <!-- Khoảnh khắc của chúng ta -->
+            <section class="mb-12 fade-in" style="animation-delay: 0.8s; margin-top: 6rem;">
+                <h3 class="font-dancing text-5xl text-center text-pink-500 mb-12">Khoảnh khắc của chúng ta</h3>
+                <div class="moments-gallery">
+                    <div class="moment-photo"><img src="3.jpg" alt="Ảnh kỷ niệm 1"></div>
+                    <div class="moment-photo"><img src="2.JPG" alt="Ảnh kỷ niệm 2"></div>
+                    <div class="moment-photo"><img src="4.jpg" alt="Ảnh kỷ niệm 3"></div>
+                </div>
+            </section>
+
+            <!-- Lời Động Viên Từ AI -->
+            <section class="text-center mt-20 fade-in" style="animation-delay: 0.9s;">
+                <h3 class="font-dancing text-4xl text-pink-500 mb-4">Góc Động Viên</h3>
+                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Trong cuộc sống, sẽ không thể tránh khỏi những khoảnh khắc cô đơn, thất vọng,... Hãy để những lời động viên nhỏ nàyy tiếp thêm sức mạnh cho cậu</p>
+                <button id="generateEncouragementBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    Nhận Lời Động Viên 💖
+                </button>
+                <div id="encouragementResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic max-w-2xl mx-auto flex items-center justify-center">
+                    <p id="encouragementText">...</p>
+                    <div id="encouragementLoading" class="hidden">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Góc Bí Mật -->
+            <section class="text-center mt-20 fade-in" style="animation-delay: 1s;">
+                <button id="openSecretBtn" class="bg-transparent border-none cursor-pointer group">
+                     <svg class="h-16 w-16 text-gray-400 group-hover:text-pink-400 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                    </svg>
+                </button>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Audio Element -->
+    <!-- THAY ĐƯỜNG DẪN FILE NHẠC CỦA BẠN VÀO ĐÂY -->
+    <audio id="birthday-song" src="hpbd.mp3"></audio>
+
+    <!-- Image Lightbox -->
+    <div id="lightbox" class="hidden">
+        <span id="lightbox-close">&times;</span>
+        <img id="lightbox-image" src="" alt="Ảnh phóng to">
+    </div>
+
+    <!-- Modal Bí Mật -->
+    <div id="secretModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+        <div id="secretModalContent" class="rounded-lg shadow-2xl p-6 md:p-8 max-w-lg w-11/12">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-dancing text-4xl text-pink-500"><strong>Một vài lời</strong></h3>
+                <button id="closeSecretBtn" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <div class="secret-text-container">
+                <div class="font-handwriting secret-text">
+                    <p><strong>Mừng Quỳnh Nhi ngang hàng với Lê Đức hehe.</strong></p>
+                    <p>Thời gian trôi nhanh quá hic. Nhớ ngày nào mới theo chân ba vào tiểu học, chạy chiếc xe đạp màu nâu mà giờ sắp bước chân vào đại học rồi... </p>
+                    <p>Lần đầu tiên gặp cậu, tớ đã nghĩ "Wow, bạn này trông hay ho thật!". Và đúng là như vậy thật. Cậu luôn mang đến năng lượng tích cực và những câu chuyện cười không đỡ nổi. Tình bạn của chúng ta là một trong những điều quý giá nhất đối với tớ.</p>
+                    <p>Hãy giữ bí mật này nhé, chỉ hai chúng ta biết thôi đó! Chúc cậu một sinh nhật thật nhiều niềm vui và bất ngờ. Yêu cậu!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const introOverlay = document.getElementById('intro-overlay');
+            const mainContent = document.getElementById('main-content');
+            const showWishBtn = document.getElementById('showWishBtn');
+            const wishElement = document.getElementById('main-wish');
+            const wishTextContent = "Mừng Quỳnh Nhi bước sang tuổi 18 - một cột mốc đặc biệt đánh dấu cho sự khởi đầu mới. Chúc cậu luôn luôn vui vẻ, yêu đời, ngày càng thông minh, xinh đẹp và thành công trong cuộc sống 💖";
+            let typewriterSynth;
+            let openSound;
+
+            // --- Xử lý mở hộp quà ---
+            introOverlay.addEventListener('click', async () => {
+                if (typeof Tone !== 'undefined' && Tone.context.state !== 'running') {
+                    await Tone.start();
+                }
+                
+                if (typeof Tone !== 'undefined' && !openSound) {
+                    openSound = new Tone.Synth({
+                        oscillator: { type: "sine" },
+                        envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+                    }).toDestination();
+                }
+                if (openSound) {
+                    openSound.triggerAttackRelease("C5", "0.5");
+                }
+
+                introOverlay.classList.add('open');
+                
+                const duration = 1 * 1000;
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10001 };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+                    const particleCount = 50 * (timeLeft / duration);
+                    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 } });
+                }, 250);
+
+                setTimeout(() => {
+                    introOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        introOverlay.style.display = 'none';
+                        mainContent.classList.remove('hidden');
+                    }, 1000);
+                }, 500);
+            }, { once: true });
+
+            // --- Xử lý nút nhận lời chúc ---
+            showWishBtn.addEventListener('click', () => {
+                showWishBtn.style.display = 'none';
+                wishElement.style.display = 'block';
+                startTypewriter();
+            }, { once: true });
+
+            // --- Hiệu ứng gõ chữ ---
+            function typeWriter(element, text, speed, callback) {
+                let i = 0;
+                element.innerHTML = "";
+                element.classList.add('typing');
+                const type = () => {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        if (text.charAt(i) !== ' ' && typewriterSynth) {
+                            try {
+                                typewriterSynth.triggerAttackRelease("C5", "8n");
+                            } catch(e) { console.error("Tone.js error:", e); }
+                        }
+                        i++;
+                        setTimeout(type, speed);
+                    } else if (callback) {
+                        callback();
+                    }
+                };
+                type();
+            }
+            
+            function startTypewriter() {
+                if (typeof Tone !== 'undefined' && !typewriterSynth) {
+                    typewriterSynth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: 'sine' },
+                        envelope: { attack: 0.005, decay: 0.1, sustain: 0.01, release: 0.1 }
+                    }).toDestination();
+                }
+                typeWriter(wishElement, wishTextContent, 80, () => {
+                    wishElement.classList.remove('typing');
+                });
+            }
+
+            // --- Lời Động Viên Từ AI ---
+            const generateEncouragementBtn = document.getElementById('generateEncouragementBtn');
+            const encouragementTextP = document.getElementById('encouragementText');
+            const encouragementLoading = document.getElementById('encouragementLoading');
+
+            generateEncouragementBtn.addEventListener('click', async () => {
+                encouragementTextP.classList.add('hidden');
+                encouragementLoading.classList.remove('hidden');
+                generateEncouragementBtn.disabled = true;
+                generateEncouragementBtn.innerHTML = 'Đang viết...';
+
+                const prompt = 'Viết một lời động viên ngắn gọn, chân thành gửi đến Quỳnh Nhi. Dùng từ ngữ đơn giản, tự nhiên, giống như bạn bè nói chuyện với nhau. Tránh dùng lời lẽ hoa mỹ hay sến. Ví dụ: "Có gì cứ nói, mình nghe đây" hoặc "Mọi chuyện rồi cũng qua thôi, đừng tự ép mình quá". Kèm theo một vài sticker động viên dễ thương. Không thêm hướng dẫn hay chú thích.';
+
+                
+                try {
+                    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const payload = { contents: chatHistory };
+                    const apiKey = "AIzaSyDLbXYlcOqZQPBIE8UwiUvEgKLVeS2WkhA";
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+
+                    const result = await response.json();
+                    let generatedText = "Hãy cứ dũng cảm bước đi nhé, mọi chuyện rồi sẽ ổn thôi!";
+                    if (result.candidates?.[0]?.content?.parts?.[0]) {
+                        generatedText = result.candidates[0].content.parts[0].text;
+                    }
+                    const cleanedText = generatedText.replace(/\*\*/g, '');
+                    encouragementTextP.textContent = `"${cleanedText}"`;
+                } catch (error) {
+                    console.error("Error calling Gemini API:", error);
+                    encouragementTextP.textContent = "Oops! Có lỗi xảy ra. Nhưng hãy luôn nhớ rằng cậu rất tuyệt vời!";
+                } finally {
+                    encouragementLoading.classList.add('hidden');
+                    encouragementTextP.classList.remove('hidden');
+                    generateEncouragementBtn.disabled = false;
+                    generateEncouragementBtn.innerHTML = 'Nhận Lời Động Viên Khác 💖';
+                }
+            });
+
+            // --- Xử lý Modal Bí Mật ---
+            const openSecretBtn = document.getElementById('openSecretBtn');
+            const secretModal = document.getElementById('secretModal');
+            const closeSecretBtn = document.getElementById('closeSecretBtn');
+
+            openSecretBtn.addEventListener('click', () => {
+                secretModal.classList.remove('hidden');
+            });
+
+            closeSecretBtn.addEventListener('click', () => {
+                secretModal.classList.add('hidden');
+            });
+
+            secretModal.addEventListener('click', (e) => {
+                if (e.target === secretModal) {
+                    secretModal.classList.add('hidden');
+                }
+            });
+
+            // --- Image Lightbox ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxClose = document.getElementById('lightbox-close');
+            const galleryImages = document.querySelectorAll('.moment-photo img');
+
+            galleryImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    lightboxImage.src = image.src;
+                    lightbox.classList.remove('hidden');
+                });
+            });
+
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.add('hidden');
+            });
+
+             lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.add('hidden');
+                }
+            });
+
+            // --- Music Player Logic ---
+            const audio = document.getElementById('birthday-song');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const progressBar = document.querySelector('.progress-bar');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationEl = document.getElementById('duration');
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            playPauseBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                } else {
+                    audio.pause();
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                }
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                const { currentTime, duration } = audio;
+                if (duration) {
+                    const progressPercent = (currentTime / duration) * 100;
+                    progress.style.width = `${progressPercent}%`;
+                    currentTimeEl.textContent = formatTime(currentTime);
+                }
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audio.duration);
+            });
+
+            progressBar.addEventListener('click', (e) => {
+                const width = progressBar.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                if (duration) {
+                    audio.currentTime = (clickX / width) * duration;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
