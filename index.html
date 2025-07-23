@@ -24,8 +24,48 @@
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="8" fill="%23f8bbd0" fill-opacity="0.15"/></svg>');
             background-position: 10% 20%, 80% 90%;
             background-repeat: no-repeat;
+            background-attachment: fixed;
             overflow-x: hidden;
+            position: relative;
         }
+        
+        /* Hiệu ứng parallax */
+        .parallax-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .parallax-layer-1 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23f8bbd0" fill-opacity="0.1"/></svg>');
+            background-size: 100px 100px;
+            transform: translateZ(-3px) scale(1.5);
+        }
+        
+        .parallax-layer-2 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23fce4ec" fill-opacity="0.15" d="M50 0L55.9 36.45 90.45 35.55 65.45 59.55 73.1 90.45 50 75 26.9 90.45 34.55 59.55 9.55 35.55 44.1 36.45Z"/></svg>');
+            background-size: 200px 200px;
+            transform: translateZ(-1px) scale(1.2);
+        }
+
+        /* Background lấp lánh */
+        .twinkle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+            z-index: -2;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
         .font-dancing { font-family: 'Dancing Script', cursive; }
         .font-handwriting { font-family: 'Patrick Hand', cursive; }
         
@@ -36,12 +76,33 @@
             width: 100%; height: 100%;
             background-color: #fde2e9;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 10000;
             cursor: pointer;
             transition: opacity 1s ease-in-out .5s;
         }
+        
+        .intro-text {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 80%;
+        }
+        
+        .intro-text h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ec407a;
+            margin-bottom: 15px;
+        }
+        
+        .intro-text p {
+            font-size: 1.2rem;
+            color: #f06292;
+            line-height: 1.6;
+        }
+        
         .gift-container {
             position: relative;
             width: 300px;
@@ -49,7 +110,12 @@
             perspective: 1000px;
             animation: floatGift 3s ease-in-out infinite;
         }
-        @keyframes floatGift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        
+        @keyframes floatGift { 
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-20px); } 
+        }
+        
         .gift-box-base {
             width: 220px;
             height: 150px;
@@ -60,6 +126,7 @@
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
+        
         .gift-lid {
             width: 240px;
             height: 70px;
@@ -71,6 +138,7 @@
             transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), top 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             z-index: 2;
         }
+        
         .gift-ribbon-v {
             position: absolute;
             width: 25px;
@@ -79,6 +147,7 @@
             left: 50%;
             transform: translateX(-50%);
         }
+        
         .gift-bow {
             position: absolute;
             width: 120px; height: 120px;
@@ -87,60 +156,162 @@
             z-index: 3;
             transition: transform .5s ease, opacity .5s ease;
         }
+        
         #intro-overlay.open .gift-lid { top: -150px; transform: translateX(-50%) rotate(-20deg); }
         #intro-overlay.open .gift-bow { transform: translateX(-50%) scale(0); opacity: 0; }
         
         /* --- Music Player --- */
         .music-player {
             background: white;
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             padding: 1.5rem;
             box-shadow: 0 10px 25px -5px rgba(236, 64, 122, 0.1), 0 8px 10px -6px rgba(236, 64, 122, 0.1);
             max-width: 400px;
             margin: 0 auto 2rem auto;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #fce4ec;
         }
+        
+        .music-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ec407a, #f8bbd0, #ec407a);
+        }
+        
         .progress-bar {
             background-color: #fce4ec;
-            height: 6px;
-            border-radius: 3px;
+            height: 8px;
+            border-radius: 4px;
             cursor: pointer;
+            margin-top: 1rem;
         }
+        
         .progress {
             background-color: #f06292;
             height: 100%;
-            border-radius: 3px;
+            border-radius: 4px;
         }
+        
         .player-controls button.play-btn {
             background-color: #f06292;
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            transition: background-color 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(244, 143, 177, 0.5);
         }
+        
         .player-controls button.play-btn:hover {
             background-color: #ec407a;
+            transform: scale(1.1);
         }
 
         /* --- Lời chúc (Nút bấm mới) --- */
-        #showWishBtn { background: #f48fb1; color: white; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(236, 64, 122, 0.3); display: inline-block; }
-        #showWishBtn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(236, 64, 122, 0.4); }
+        #showWishBtn { 
+            background: #f48fb1; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(236, 64, 122, 0.3); 
+            display: inline-block; 
+            font-size: 1.1rem;
+        }
+        
+        #showWishBtn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(236, 64, 122, 0.4); 
+        }
+        
         #main-wish { display: none; }
-        #main-wish.typing::after { content: '|'; display: inline-block; animation: blink-caret 0.7s infinite; color: #f48fb1; }
-        @keyframes blink-caret { 50% { opacity: 0; } }
-
-        /* --- Lịch (Thiết kế mới) --- */
-        .calendar-container { width: 100%; max-width: 380px; }
-        .date-26-wrapper { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-        .static-heart { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #f48fb1; }
-        .static-heart-icon { width: 100%; height: 100%; }
-        .date-number { position: relative; z-index: 1; font-weight: bold; color: white; font-size: 1.1rem; }
-        .blinking-heart-outline { position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; transform: translate(-50%, -50%); animation: blink-heart 1.5s ease-in-out infinite; color: #f8bbd0; }
-        @keyframes blink-heart {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        
+        #main-wish.typing::after { 
+            content: '|'; 
+            display: inline-block; 
+            animation: blink-caret 0.7s infinite; 
+            color: #f48fb1; 
+        }
+        
+        @keyframes blink-caret { 
+            50% { opacity: 0; } 
         }
 
+        /* --- Lịch (Thiết kế mới) --- */
+        .calendar-container { 
+            width: 100%; 
+            max-width: 380px; 
+            position: relative;
+        }
+        
+        .date-26-wrapper { 
+            position: relative; 
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .static-heart { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: #f48fb1; 
+            animation: pulse 2s infinite;
+        }
+        
+        .static-heart-icon { 
+            width: 100%; 
+            height: 100%; 
+        }
+        
+        .date-number { 
+            position: relative; 
+            z-index: 1; 
+            font-weight: bold; 
+            color: white; 
+            font-size: 1.1rem; 
+        }
+        
+        .blinking-heart-outline { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            width: 150%; 
+            height: 150%; 
+            transform: translate(-50%, -50%); 
+            animation: blink-heart 1.5s ease-in-out infinite; 
+            color: #f8bbd0; 
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes blink-heart {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1); 
+                opacity: 0.5; 
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1); 
+                opacity: 1; 
+            }
+        }
+        
         /* --- Khoảnh khắc (Bố cục mới) --- */
         .moments-gallery {
             position: relative;
@@ -149,6 +320,7 @@
             height: 220px;
             margin: 3rem auto 0 auto;
         }
+        
         .moment-photo {
             position: absolute;
             width: 120px;
@@ -160,11 +332,17 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             cursor: pointer;
         }
+        
         .moment-photo:hover {
             box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             z-index: 20 !important;
         }
-        .moment-photo img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .moment-photo img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
         
         .moment-photo:nth-child(1) {
             top: 0;
@@ -172,12 +350,14 @@
             transform: rotate(-12deg);
             z-index: 1;
         }
+        
         .moment-photo:nth-child(2) {
             top: 20px;
             left: 50%;
             transform: translateX(-50%) scale(1.15);
             z-index: 2;
         }
+        
         .moment-photo:nth-child(3) {
             top: 5px;
             right: 10%;
@@ -193,19 +373,60 @@
         }
 
         /* --- Image Lightbox --- */
-        #lightbox { position: fixed; z-index: 20000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; transition: opacity 0.3s ease; }
-        #lightbox.hidden { opacity: 0; pointer-events: none; }
-        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
-        #lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+        #lightbox { 
+            position: fixed; 
+            z-index: 20000; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.8); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: opacity 0.3s ease; 
+        }
+        
+        #lightbox.hidden { 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        
+        #lightbox img { 
+            max-width: 90%; 
+            max-height: 90%; 
+            border-radius: 8px; 
+            box-shadow: 0 0 30px rgba(255,255,255,0.3); 
+        }
+        
+        #lightbox-close { 
+            position: absolute; 
+            top: 20px; 
+            right: 30px; 
+            color: white; 
+            font-size: 40px; 
+            cursor: pointer; 
+        }
 
         /* --- Modal & Nút Bí Mật (Thiết kế mới) --- */
-        .modal-base { transition: opacity 0.3s ease-in-out; }
-        .modal-base.hidden { pointer-events: none; opacity: 0; }
+        .modal-base { 
+            transition: opacity 0.3s ease-in-out; 
+        }
+        
+        .modal-base.hidden { 
+            pointer-events: none; 
+            opacity: 0; 
+        }
+        
         .modal-content {
             transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
             background-color: #fffdf9;
         }
-        .modal-base.hidden .modal-content { transform: scale(0.95); opacity: 0; }
+        
+        .modal-base.hidden .modal-content { 
+            transform: scale(0.95); 
+            opacity: 0; 
+        }
 
         #secretModalContent {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23f5f1ee" d="M0 0h100v1H0z" transform="translate(0 50)"/></svg>');
@@ -214,6 +435,7 @@
             display: flex;
             flex-direction: column;
             max-height: 80vh;
+            border-radius: 12px;
         }
         
         .secret-text-container {
@@ -222,10 +444,22 @@
             padding-right: 1rem;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            padding: 20px;
         }
-        .secret-text-container::-webkit-scrollbar { display: none; }
-        .secret-text { color: #4a423f; font-size: 1.6rem; line-height: 1.7; }
-        .secret-text p { margin-bottom: 1.5rem; }
+        
+        .secret-text-container::-webkit-scrollbar { 
+            display: none; 
+        }
+        
+        .secret-text { 
+            color: #4a423f; 
+            font-size: 1.5rem; 
+            line-height: 1.5; 
+        }
+        
+        .secret-text p { 
+            margin-bottom: 1.5rem; 
+        }
 
         /* --- Hiệu ứng lắc khi nhập sai mật khẩu --- */
         @keyframes shake {
@@ -234,41 +468,426 @@
           30%, 50%, 70% { transform: translateX(-4px); }
           40%, 60% { transform: translateX(4px); }
         }
+        
         .shake {
           animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
         
-        /* --- [MỚI] Hộp Điều Ước --- */
+        /* --- [MỚI & TỐI ƯU] Hộp Điều Ước --- */
         #wish-box-container {
             position: relative;
-            overflow: hidden; /* Giữ các trái tim bay trong hộp */
+            overflow: hidden;
+            max-width: 500px;
+            margin: 0 auto;
+            perspective: 1000px;
         }
+        
+        .wish-box {
+            background: linear-gradient(145deg, #fff0f5, #ffeef3);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(244, 143, 177, 0.25);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .wish-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #f8bbd0, #f48fb1, #ec407a);
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.3;
+            border-radius: 30px;
+        }
+        
+        .wish-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ec407a, #f8bbd0, #ec407a);
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .wish-box-header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .wish-box-header h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ec407a;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .wish-box-header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #f8bbd0, #ec407a, #f8bbd0);
+            margin: 10px auto;
+            border-radius: 3px;
+        }
+        
         @keyframes flyUp {
             0% {
-                transform: translateY(0) scale(0.5);
+                transform: translateY(0) translateX(0) scale(0.5) rotate(0deg);
                 opacity: 1;
             }
+            50% {
+                transform: translateY(-100px) translateX(var(--fly-x-drift, 0px)) scale(1.2) rotate(var(--fly-rotation, 0deg));
+                opacity: 0.8;
+            }
             100% {
-                transform: translateY(-200px) scale(1.5);
+                transform: translateY(-250px) translateX(calc(var(--fly-x-drift, 0px) * 1.5)) scale(1.8) rotate(calc(var(--fly-rotation, 0deg) * 2));
                 opacity: 0;
             }
         }
+        
         .flying-heart {
             position: absolute;
-            bottom: 60px; /* Bắt đầu bay từ gần nút bấm */
+            bottom: 60px;
             left: 50%;
             pointer-events: none;
-            font-size: 24px;
+            font-size: 28px;
             animation-name: flyUp;
             animation-timing-function: ease-out;
             animation-fill-mode: forwards;
+            transform-origin: center center;
+            z-index: 5;
+        }
+        
+        /* --- Thiết kế mới cho Góc Động Viên --- */
+        .encouragement-container {
+            background-color: #fffde7;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            border-left: 5px solid #ffd54f;
+            font-family: 'Patrick Hand', cursive;
+            transform: rotate(-1deg);
+        }
+        
+        .encouragement-container::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd54f"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            background-size: contain;
+            opacity: 0.2;
+        }
+        
+        .encouragement-container h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #f57c00;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        /* --- Thiết kế mới cho Bói Vui --- */
+        .fortune-container {
+            background: linear-gradient(135deg, #e1bee7, #ce93d8);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(156, 39, 176, 0.2);
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            transform: rotate(1deg);
+            overflow: hidden;
+            perspective: 1000px;
+            transition: transform 0.5s ease;
+        }
+        
+        .fortune-container:hover {
+            transform: rotate(0deg) translateY(-5px);
+        }
+        
+        .fortune-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,20 Q40,5 60,20 T100,20 Q95,40 100,60 T100,100 Q80,95 60,100 T20,100 Q5,80 20,60 T20,20Z" fill="none" stroke="white" stroke-width="1" opacity="0.1"/></svg>');
+            background-size: 150px 150px;
+            opacity: 0.3;
+        }
+        
+        .fortune-container h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #4a148c;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+        
+        .fortune-container::after {
+            content: '🔮';
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            font-size: 4rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+        
+        /* --- Nút Lên Đầu Trang --- */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #f48fb1;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(244, 143, 177, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+        }
+        
+        #back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        
+        #back-to-top:hover {
+            background-color: #ec407a;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(236, 64, 122, 0.6);
+        }
+        
+        /* --- Tooltip --- */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 180px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        /* --- Hiệu ứng hào quang --- */
+        .halo {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 20px;
+            background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            animation: halo-pulse 3s infinite;
+        }
+        
+        @keyframes halo-pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.5; }
+        }
+        
+        /* --- Hiệu ứng chữ sáng --- */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255,255,255,0.8), 
+                         0 0 20px rgba(255,255,255,0.6), 
+                         0 0 30px rgba(255,255,255,0.4);
+            transition: text-shadow 0.3s;
+        }
+        
+        .glow-text:hover {
+            text-shadow: 0 0 15px rgba(255,255,255,1), 
+                         0 0 30px rgba(255,255,255,0.8), 
+                         0 0 45px rgba(255,255,255,0.6);
+        }
+        
+        /* --- Nâng cấp: Hiệu ứng tên Quỳnh Nhi --- */
+        #birthday-girl {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        #birthday-girl:hover {
+            transform: scale(1.05);
+        }
+        
+        #birthday-girl::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #ec407a, #f8bbd0, #ec407a);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+        
+        #birthday-girl:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        
+        /* --- Trò chơi thổi nến --- */
+        .candle-game-container {
+            background: linear-gradient(145deg, #fff0f5, #ffeef3);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 2rem auto;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(244, 143, 177, 0.25);
+            position: relative;
+        }
+        
+        .cake {
+            position: relative;
+            width: 200px;
+            height: 120px;
+            margin: 0 auto;
+            background: #f8d7da;
+            border-radius: 50% 50% 0 0;
+        }
+        
+        .candle {
+            position: absolute;
+            bottom: 100%;
+            width: 8px;
+            height: 40px;
+            background: white;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .flame {
+            position: absolute;
+            bottom: 100%;
+            width: 12px;
+            height: 24px;
+            background: linear-gradient(to top, #ff9900, #ffcc00, #ffff00);
+            border-radius: 50% 50% 20% 20%;
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 10px #ffcc00;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .blow-button {
+            background: #f48fb1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(244, 143, 177, 0.5);
+        }
+        
+        .blow-button:hover {
+            background: #ec407a;
+            transform: translateY(-3px);
+        }
+        
+        .blow-instruction {
+            font-size: 1.2rem;
+            color: #ec407a;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .candle-counter {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            color: #f57c00;
+            font-weight: bold;
+        }
+        
+        /* --- Tăng cỡ chữ góc động viên --- */
+        #encouragementText {
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body class="text-gray-700">
+    <!-- Các lớp parallax -->
+    <div class="parallax-layer parallax-layer-1"></div>
+    <div class="parallax-layer parallax-layer-2"></div>
 
     <!-- Màn hình chờ hộp quà -->
     <div id="intro-overlay">
+        <div class="intro-text">
+            <h1>Nhấn vào để thấy điều bất ngờ</h1>
+            <p></p>
+        </div>
         <div class="gift-container">
             <div class="gift-bow">
                  <svg viewBox="0 0 100 100"><path d="M 50 50 C 30 -10, 0 10, 40 50 L 50 60 Z" fill="#f06292"/><path d="M 50 50 C 70 -10, 100 10, 60 50 L 50 60 Z" fill="#f06292"/><circle cx="50" cy="50" r="15" fill="#fce4ec"/></svg>
@@ -285,7 +904,8 @@
         <div class="container mx-auto px-4 py-8 md:py-16 max-w-5xl">
             <header class="text-center mb-12">
                 <h1 class="font-dancing text-5xl md:text-7xl text-pink-500 mb-2">Happy Birthday</h1>
-                <h2 class="text-3xl md:text-4xl font-bold text-pink-400">Lê Quỳnh Nhi</h2>
+                <h2 id="birthday-girl" class="text-3xl md:text-4xl font-bold text-pink-400 glow-text">Lê Quỳnh Nhi</h2>
+                <div class="signature"></div>
             </header>
 
             <!-- Ảnh và Lịch -->
@@ -294,6 +914,7 @@
                     <img src="1.jpg" alt="Ảnh của Lê Quỳnh Nhi" class="w-full h-full object-cover border-2 border-gray-100">
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg text-center calendar-container">
+                    <div class="halo"></div>
                     <h3 class="font-bold text-3xl text-pink-500 mb-4 border-b-2 border-dotted border-pink-200 pb-2">Tháng 7, 2025</h3>
                     <div class="grid grid-cols-7 gap-y-3 gap-x-2 text-base place-items-center">
                         <span class="text-gray-400 font-bold">T2</span><span class="text-gray-400 font-bold">T3</span><span class="text-gray-400 font-bold">T4</span><span class="text-gray-400 font-bold">T5</span><span class="text-gray-400 font-bold">T6</span><span class="text-gray-400 font-bold">T7</span><span class="text-gray-400 font-bold">CN</span>
@@ -320,7 +941,7 @@
             <section>
                  <div class="music-player">
                     <div class="mb-2 text-center">
-                        <p id="song-title" class="font-bold text-gray-800">Happy Birthday to You (Always 14)</p>
+                        <p id="song-title" class="font-bold text-gray-800 text-xl">Happy Birthday to You</p>
                         <p id="artist-name" class="text-sm text-gray-500">AMEE x Hoàng Dũng x Obito x Hứa Kim Tuyền</p>
                     </div>
                     <div class="progress-bar mb-2">
@@ -345,19 +966,22 @@
                 <p id="main-wish" class="font-dancing text-3xl md:text-4xl text-gray-600 leading-relaxed max-w-2xl mx-auto min-h-[100px]"></p>
             </section>
 
-            <!-- [MỚI] Hộp Điều Ước -->
-            <section id="wish-box-section" class="my-16 hidden">
-                <div id="wish-box-container" class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg text-center">
-                    <h3 class="font-dancing text-4xl text-pink-500 mb-4">Gửi Một Điều Ưước... ✨</h3>
-                    <p class="text-gray-500 mb-6">Hãy viết điều ước cho tuổi mới của cậu vào đây, vũ trụ sẽ lắng nghe đó!</p>
-                    <textarea id="user-wish-input" rows="3" class="w-full p-3 border-2 border-pink-200 rounded-lg focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition" placeholder="Tớ ước rằng..."></textarea>
-                    <button id="send-wish-btn" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
-                        Gửi Tới Các Vì Sao
-                    </button>
-                    <p id="wish-confirmation" class="text-green-500 font-bold mt-4 h-6"></p>
+            <!-- [MỚI] Hộp Điều Ước (Đã tách riêng) -->
+            <section id="wish-box-section" class="my-16">
+                <div id="wish-box-container">
+                    <div class="wish-box">
+                        <div class="wish-box-header">
+                            <h3>Gửi Một Điều Ước... ✨</h3>
+                            <p class="text-gray-500">Hãy viết điều ước cho tuổi mới của cậu vào đây, vũ trụ sẽ lắng nghe đó!</p>
+                        </div>
+                        <textarea id="user-wish-input" rows="3" class="w-full p-4 border-2 border-pink-200 rounded-lg focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition bg-white bg-opacity-70" placeholder="Tớ ước rằng..."></textarea>
+                        <button id="send-wish-btn" class="mt-6 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                            Gửi Tới Các Vì Sao
+                        </button>
+                        <p id="wish-confirmation" class="text-green-500 font-bold mt-4 h-6 text-center"></p>
+                    </div>
                 </div>
             </section>
-
 
             <!-- Khoảnh khắc của chúng ta -->
             <section class="mb-12" style="margin-top: 6rem;">
@@ -369,49 +993,84 @@
                 </div>
             </section>
 
-            <!-- Lời Động Viên Từ AI -->
+            <!-- Trò chơi thổi nến -->
+            <section class="candle-game-container">
+                <h3 class="font-dancing text-4xl text-pink-500 mb-6">Thổi nến sinh nhật</h3>
+                <p class="blow-instruction"></p>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <div class="cake">
+                    <div class="candle" style="left: 30%;">
+                        <div class="flame" style="left: -2px;" id="flame-1"></div>
+                    </div>
+                    <div class="candle" style="left: 50%;">
+                        <div class="flame" style="left: -2px;" id="flame-2"></div>
+                    </div>
+                    <div class="candle" style="left: 70%;">
+                        <div class="flame" style="left: -2px;" id="flame-3"></div>
+                    </div>
+                </div>
+                
+                <button id="blow-button" class="blow-button">Thổi nến</button>
+                <p id="blow-result" class="mt-4 font-bold text-pink-500"></p>
+                <p id="candle-counter" class="candle-counter">Còn 3 cây nến cháy</p>
+            </section>
+
+            <!-- Lời Động Viên Từ AI (Thiết kế mới) -->
             <section class="text-center mt-20">
-                <h3 class="font-dancing text-4xl text-pink-500 mb-4">Góc Động Viên</h3>
-                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Trong cuộc sống, sẽ không thể tránh khỏi những khoảnh khắc cô đơn, thất vọng,... Hãy để những lời động viên nhỏ nàyy tiếp thêm sức mạnh cho cậu</p>
-                <button id="generateEncouragementBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
-                    Nhận Lời Động Viên 💖
-                </button>
-                <div id="encouragementResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic max-w-2xl mx-auto flex items-center justify-center">
-                    <p id="encouragementText">...</p>
-                    <div id="encouragementLoading" class="hidden">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+                <div class="encouragement-container">
+                    <h3 class="font-dancing">Góc Động Viên</h3>
+                    <p class="text-gray-600 mb-8">Trong cuộc sống, sẽ không thể tránh khỏi những khoảnh khắc cô đơn, thất vọng,... Hãy để những lời động viên nhỏ nàyy tiếp thêm sức mạnh cho cậu</p>
+                    <button id="generateEncouragementBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                        Nhận Lời Động Viên 💖
+                    </button>
+                    <div id="encouragementResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic flex items-center justify-center">
+                        <p id="encouragementText">...</p>
+                        <div id="encouragementLoading" class="hidden">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+                        </div>
                     </div>
                 </div>
             </section>
             
-            <!-- [MỚI] Bói Vui Sinh Nhật -->
+            <!-- [MỚI] Bói Vui Sinh Nhật (Thiết kế mới) -->
             <section class="text-center mt-20">
-                <h3 class="font-dancing text-4xl text-pink-500 mb-4">Bói Vui Tuổi Mới</h3>
-                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Hé lộ một chút "thiên cơ" về tuổi 18 của cậu nào. Chỉ để cho vui thôi nhé!</p>
-                <button id="generateFortuneBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
-                    Xem Vận Mệnh Tuổi Mới! 🔮
-                </button>
-                <div id="fortuneResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic max-w-2xl mx-auto flex items-center justify-center">
-                    <p id="fortuneText">...</p>
-                    <div id="fortuneLoading" class="hidden">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                <div class="fortune-container">
+                    <h3 class="font-dancing">Bói Vui Tuổi Mới</h3>
+                    <p class="text-gray-700 mb-8">Hé lộ một chút "thiên cơ" về tuổi 18 của cậu nào. Chỉ để cho vui thôi nhé!</p>
+                    <button id="generateFortuneBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                        Xem Vận Mệnh Tuổi Mới! 🔮
+                    </button>
+                    <div id="fortuneResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic flex items-center justify-center">
+                        <p id="fortuneText">...</p>
+                        <div id="fortuneLoading" class="hidden">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Góc Bí Mật -->
             <section class="text-center mt-20">
-                <button id="openSecretBtn" class="bg-transparent border-none cursor-pointer group">
-                     <svg class="h-16 w-16 text-gray-400 group-hover:text-pink-400 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                    </svg>
-                </button>
+                <div class="tooltip">
+                    <button id="openSecretBtn" class="bg-transparent border-none cursor-pointer group">
+                         <svg class="h-16 w-16 text-gray-400 group-hover:text-pink-400 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                    </button>
+                    <span class="tooltip-text">Bấm để xem lời nhắn bí mật</span>
+                </div>
             </section>
         </div>
     </main>
     
     <!-- Audio Element -->
     <audio id="birthday-song" src="hpbd.mp3"></audio>
+    <audio id="blow-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wind-whistling-1240.mp3"></audio>
+    <audio id="candle-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-candle-flame-woosh-1171.mp3"></audio>
 
     <!-- Image Lightbox -->
     <div id="lightbox" class="hidden">
@@ -435,7 +1094,6 @@
         </div>
     </div>
 
-
     <!-- Modal Bí Mật -->
     <div id="secretModal" class="modal-base fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
         <div id="secretModalContent" class="modal-content rounded-lg shadow-2xl p-6 md:p-8 max-w-lg w-11/12">
@@ -457,9 +1115,62 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
             </div>
         </div>
     </div>
+    
+    <!-- Nút Lên Đầu Trang -->
+    <div id="back-to-top" class="visible">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Tạo hiệu ứng lấp lánh background
+            function createTwinkles() {
+                const container = document.createElement('div');
+                container.classList.add('twinkling-background');
+                
+                const numStars = 100;
+                for (let i = 0; i < numStars; i++) {
+                    const twinkle = document.createElement('div');
+                    twinkle.classList.add('twinkle');
+                    
+                    // Random position
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    twinkle.style.left = `${x}%`;
+                    twinkle.style.top = `${y}%`;
+                    
+                    // Random size (1px to 3px)
+                    const size = Math.random() * 2 + 1;
+                    twinkle.style.width = `${size}px`;
+                    twinkle.style.height = `${size}px`;
+                    
+                    // Random animation duration and delay
+                    const duration = Math.random() * 3 + 2; // 2-5s
+                    const delay = Math.random() * 5;
+                    twinkle.style.animationDuration = `${duration}s`;
+                    twinkle.style.animationDelay = `${delay}s`;
+                    
+                    container.appendChild(twinkle);
+                }
+                
+                document.body.appendChild(container);
+            }
+            
+            createTwinkles();
+
+            // Hiệu ứng parallax
+            window.addEventListener('scroll', function() {
+                const scrollY = window.scrollY;
+                const parallaxLayers = document.querySelectorAll('.parallax-layer');
+                
+                parallaxLayers.forEach((layer, index) => {
+                    const speed = index === 0 ? 0.1 : 0.2;
+                    layer.style.transform = `translateY(${scrollY * speed}px)`;
+                });
+            });
+            
             const introOverlay = document.getElementById('intro-overlay');
             const mainContent = document.getElementById('main-content');
             const showWishBtn = document.getElementById('showWishBtn');
@@ -485,6 +1196,33 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 }
 
                 introOverlay.classList.add('open');
+
+                // Hiệu ứng pháo hoa
+                if (typeof confetti === 'function') {
+                    const end = Date.now() + (2 * 1000);
+                    const colors = ['#f48fb1', '#ec407a', '#f8bbd0', '#ffffff'];
+
+                    (function frame() {
+                        confetti({
+                            particleCount: 2,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: colors
+                        });
+                        confetti({
+                            particleCount: 2,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: colors
+                        });
+
+                        if (Date.now() < end) {
+                            requestAnimationFrame(frame);
+                        }
+                    }());
+                }
 
                 setTimeout(() => {
                     introOverlay.style.opacity = '0';
@@ -533,12 +1271,10 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 }
                 typeWriter(wishElement, wishTextContent, 80, () => {
                     wishElement.classList.remove('typing');
-                    // [MỚI] Hiển thị Hộp Điều Ước sau khi lời chúc hiện xong
-                    document.getElementById('wish-box-section').classList.remove('hidden');
                 });
             }
 
-            // --- [MỚI] Hộp Điều Ước ---
+            // --- [MỚI & TỐI ƯU] Hộp Điều Ước ---
             const sendWishBtn = document.getElementById('send-wish-btn');
             const wishInput = document.getElementById('user-wish-input');
             const wishBoxContainer = document.getElementById('wish-box-container');
@@ -566,18 +1302,26 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 const heart = document.createElement('div');
                 heart.classList.add('flying-heart');
                 heart.innerHTML = ['💖', '❤️', '💕', '✨', '⭐'][Math.floor(Math.random() * 5)];
+                
+                // Random hóa đường bay và góc xoay
+                const xDrift = (Math.random() - 0.5) * 100;
+                const rotation = (Math.random() - 0.5) * 40;
+                
+                heart.style.setProperty('--fly-x-drift', `${xDrift}px`);
+                heart.style.setProperty('--fly-rotation', `${rotation}deg`);
+
                 heart.style.left = `${Math.random() * 80 + 10}%`;
-                heart.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
+                heart.style.animationDuration = `${Math.random() * 2 + 2}s`;
                 heart.style.animationDelay = `${Math.random() * 0.5}s`;
                 heart.style.color = ['#f48fb1', '#ec407a', '#f8bbd0', '#ffc107'][Math.floor(Math.random() * 4)];
 
                 wishBoxContainer.appendChild(heart);
 
+                // Dọn dẹp trái tim sau khi bay xong
                 setTimeout(() => {
                     heart.remove();
-                }, 3500); // Dọn dẹp trái tim sau khi bay xong
+                }, 4500); 
             }
-
 
             // --- Lời Động Viên Từ AI ---
             const generateEncouragementBtn = document.getElementById('generateEncouragementBtn');
@@ -633,11 +1377,11 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 }
             });
             
-            // [MỚI] Hàm gọi API chung
+            // Hàm gọi API chung
             async function callGeminiAPI(promptText) {
                 let chatHistory = [{ role: "user", parts: [{ text: promptText }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyDLbXYlcOqZQPBIE8UwiUvEgKLVeS2WkhA"; // Vui lòng giữ nguyên API Key này
+                const apiKey = "AIzaSyDLbXYlcOqZQPBIE8UwiUvEgKLVeS2WkhA";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
@@ -650,12 +1394,10 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
 
                 const result = await response.json();
                 if (result.candidates?.[0]?.content?.parts?.[0]) {
-                    // Loại bỏ các ký tự markdown như **
                     return result.candidates[0].content.parts[0].text.replace(/\*\*/g, '');
                 }
                 throw new Error("No content generated");
             }
-
 
             // --- Xử lý Vùng An Toàn (Mật khẩu & Modal) ---
             const openSecretBtn = document.getElementById('openSecretBtn');
@@ -790,6 +1532,111 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 if (duration) {
                     audio.currentTime = (clickX / width) * duration;
                 }
+            });
+            
+            // --- Nút Lên Đầu Trang ---
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // --- Easter Egg: Click vào tên ---
+            const birthdayGirl = document.getElementById('birthday-girl');
+            
+            birthdayGirl.addEventListener('click', () => {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                    
+                    birthdayGirl.classList.add('glow-text');
+                    setTimeout(() => {
+                        birthdayGirl.classList.remove('glow-text');
+                    }, 1000);
+                }
+            });
+            
+            // --- Trò chơi thổi nến ---
+            const blowButton = document.getElementById('blow-button');
+            const blowResult = document.getElementById('blow-result');
+            const candleCounter = document.getElementById('candle-counter');
+            const blowSound = document.getElementById('blow-sound');
+            const candleSound = document.getElementById('candle-sound');
+            const flames = [
+                document.getElementById('flame-1'),
+                document.getElementById('flame-2'),
+                document.getElementById('flame-3')
+            ];
+            
+            let candlesBlown = 0;
+            
+            blowButton.addEventListener('click', () => {
+                blowResult.textContent = '';
+                blowSound.currentTime = 0;
+                blowSound.play();
+                
+                // Hiệu ứng thổi
+                blowButton.disabled = true;
+                blowButton.textContent = 'Đang thổi...';
+                
+                setTimeout(() => {
+                    // Tắt lửa ngẫu nhiên
+                    const flameToBlow = Math.floor(Math.random() * flames.length);
+                    if (flames[flameToBlow].style.display !== 'none') {
+                        flames[flameToBlow].style.display = 'none';
+                        candlesBlown++;
+                        candleSound.currentTime = 0;
+                        candleSound.play();
+                        
+                        // Cập nhật đếm nến
+                        const remainingCandles = flames.length - candlesBlown;
+                        candleCounter.textContent = `Còn ${remainingCandles} cây nến cháy`;
+                        
+                        if (candlesBlown === flames.length) {
+                            blowResult.textContent = 'Chúc mừng! Bạn đã thổi tắt tất cả nến! 🎂';
+                            blowResult.style.color = '#4CAF50';
+                            
+                            // Pháo hoa
+                            if (typeof confetti === 'function') {
+                                confetti({
+                                    particleCount: 150,
+                                    spread: 70,
+                                    origin: { y: 0.6 }
+                                });
+                            }
+                            
+                            setTimeout(() => {
+                                // Reset nến
+                                flames.forEach(flame => flame.style.display = 'block');
+                                candlesBlown = 0;
+                                candleCounter.textContent = `Còn ${flames.length} cây nến cháy`;
+                            }, 3000);
+                        } else {
+                            blowResult.textContent = `Bạn đã thổi tắt ${candlesBlown} cây nến!`;
+                            blowResult.style.color = '#f48fb1';
+                        }
+                    } else {
+                        blowResult.textContent = 'Hãy thử lại!';
+                        blowResult.style.color = '#f48fb1';
+                    }
+                    
+                    blowButton.disabled = false;
+                    blowButton.textContent = 'Thổi nến';
+                }, 1500);
             });
         });
     </script>
