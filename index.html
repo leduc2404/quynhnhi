@@ -20,39 +20,16 @@
             font-family: 'Quicksand', sans-serif;
             background-color: #fffafb;
             background-image: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path fill="%23fce4ec" fill-opacity="0.2" d="M20 0L22.45 17.55 40 20 22.45 22.45 20 40 17.55 22.45 0 20 17.55 17.55z"/></svg>'),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="8" fill="%23f8bbd0" fill-opacity="0.15"/></svg>');
-            background-position: 10% 20%, 80% 90%;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+                linear-gradient(to bottom, #fff0f5 0%, #ffeef3 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path fill="%23fce4ec" fill-opacity="0.1" d="M100 0L112.25 87.725 200 100 112.25 112.275 100 200 87.75 112.275 0 100 87.75 87.725z"/></svg>');
+            background-size: cover, 200px 200px;
+            background-position: center, 0 0;
+            background-repeat: no-repeat, repeat;
             overflow-x: hidden;
             position: relative;
         }
         
-        /* Hiệu ứng parallax */
-        .parallax-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .parallax-layer-1 {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23f8bbd0" fill-opacity="0.1"/></svg>');
-            background-size: 100px 100px;
-            transform: translateZ(-3px) scale(1.5);
-        }
-        
-        .parallax-layer-2 {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23fce4ec" fill-opacity="0.15" d="M50 0L55.9 36.45 90.45 35.55 65.45 59.55 73.1 90.45 50 75 26.9 90.45 34.55 59.55 9.55 35.55 44.1 36.45Z"/></svg>');
-            background-size: 200px 200px;
-            transform: translateZ(-1px) scale(1.2);
-        }
-
-        /* Background lấp lánh */
+        /* Hiệu ứng lấp lánh */
         .twinkle {
             position: absolute;
             background-color: rgba(255, 255, 255, 0.8);
@@ -69,7 +46,7 @@
         .font-dancing { font-family: 'Dancing Script', cursive; }
         .font-handwriting { font-family: 'Patrick Hand', cursive; }
         
-        /* --- Intro Hộp quà (Thiết kế 3D mới) --- */
+        /* --- Intro Hộp quà --- */
         #intro-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -88,6 +65,7 @@
             text-align: center;
             margin-bottom: 40px;
             max-width: 80%;
+            transition: opacity 0.5s ease;
         }
         
         .intro-text h1 {
@@ -212,7 +190,7 @@
             transform: scale(1.1);
         }
 
-        /* --- Lời chúc (Nút bấm mới) --- */
+        /* --- Lời chúc --- */
         #showWishBtn { 
             background: #f48fb1; 
             color: white; 
@@ -244,7 +222,7 @@
             50% { opacity: 0; } 
         }
 
-        /* --- Lịch (Thiết kế mới) --- */
+        /* --- Lịch --- */
         .calendar-container { 
             width: 100%; 
             max-width: 380px; 
@@ -312,7 +290,7 @@
             }
         }
         
-        /* --- Khoảnh khắc (Bố cục mới) --- */
+        /* --- Khoảnh khắc --- */
         .moments-gallery {
             position: relative;
             width: 100%;
@@ -408,7 +386,7 @@
             cursor: pointer; 
         }
 
-        /* --- Modal & Nút Bí Mật (Thiết kế mới) --- */
+        /* --- Modal & Nút Bí Mật --- */
         .modal-base { 
             transition: opacity 0.3s ease-in-out; 
         }
@@ -473,7 +451,7 @@
           animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
         
-        /* --- [MỚI & TỐI ƯU] Hộp Điều Ước --- */
+        /* --- Hộp Điều Ước --- */
         #wish-box-container {
             position: relative;
             overflow: hidden;
@@ -838,25 +816,6 @@
             100% { transform: scale(1.1); opacity: 1; }
         }
         
-        .blow-button {
-            background: #f48fb1;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: bold;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 10px rgba(244, 143, 177, 0.5);
-        }
-        
-        .blow-button:hover {
-            background: #ec407a;
-            transform: translateY(-3px);
-        }
-        
         .blow-instruction {
             font-size: 1.2rem;
             color: #ec407a;
@@ -871,17 +830,119 @@
             font-weight: bold;
         }
         
-        /* --- Tăng cỡ chữ góc động viên --- */
+        /* Microphone status */
+        .mic-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .mic-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #f48fb1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .mic-icon.active {
+            background-color: #ec407a;
+            animation: pulse 1s infinite;
+        }
+        
+        /* Tăng cỡ chữ góc động viên */
         #encouragementText {
             font-size: 1.2rem;
+        }
+        
+        /* Button tinh tế */
+        .btn {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(50, 50);
+                opacity: 0;
+            }
+        }
+        
+        /* Thanh đo lực thổi */
+        .blow-meter {
+            width: 100%;
+            height: 20px;
+            background: #fce4ec;
+            border-radius: 10px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+            display: none; /* Ẩn ban đầu */
+        }
+        
+        .blow-level {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, #4CAF50, #FFC107, #FF5722);
+            border-radius: 10px;
+            transition: width 0.1s ease-out;
+        }
+        
+        .blow-threshold {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .blow-threshold:nth-child(2) {
+            left: 33.33%;
+        }
+        
+        .blow-threshold:nth-child(3) {
+            left: 66.66%;
+        }
+        
+        .blow-result {
+            min-height: 24px;
+            margin-top: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body class="text-gray-700">
-    <!-- Các lớp parallax -->
-    <div class="parallax-layer parallax-layer-1"></div>
-    <div class="parallax-layer parallax-layer-2"></div>
-
     <!-- Màn hình chờ hộp quà -->
     <div id="intro-overlay">
         <div class="intro-text">
@@ -911,7 +972,7 @@
             <!-- Ảnh và Lịch -->
             <section class="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 mb-20">
                 <div class="main-photo-container w-64 h-80 md:w-80 md:h-[420px] rounded-lg bg-white p-4 shadow-xl transform -rotate-3 transition-transform hover:rotate-0 hover:scale-105">
-                    <img src="1.jpg" alt="Ảnh của Lê Quỳnh Nhi" class="w-full h-full object-cover border-2 border-gray-100">
+                    <img src=1.jpg alt="Ảnh của Lê Quỳnh Nhi" class="w-full h-full object-cover border-2 border-gray-100">
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg text-center calendar-container">
                     <div class="halo"></div>
@@ -962,11 +1023,11 @@
 
             <!-- Lời chúc -->
             <section class="text-center my-16">
-                <button id="showWishBtn">💌 Nhận Lời Chúc 💌</button>
+                <button id="showWishBtn" class="btn">💌 Nhận Lời Chúc 💌</button>
                 <p id="main-wish" class="font-dancing text-3xl md:text-4xl text-gray-600 leading-relaxed max-w-2xl mx-auto min-h-[100px]"></p>
             </section>
 
-            <!-- [MỚI] Hộp Điều Ước (Đã tách riêng) -->
+            <!-- Hộp Điều Ước -->
             <section id="wish-box-section" class="my-16">
                 <div id="wish-box-container">
                     <div class="wish-box">
@@ -975,7 +1036,7 @@
                             <p class="text-gray-500">Hãy viết điều ước cho tuổi mới của cậu vào đây, vũ trụ sẽ lắng nghe đó!</p>
                         </div>
                         <textarea id="user-wish-input" rows="3" class="w-full p-4 border-2 border-pink-200 rounded-lg focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition bg-white bg-opacity-70" placeholder="Tớ ước rằng..."></textarea>
-                        <button id="send-wish-btn" class="mt-6 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                        <button id="send-wish-btn" class="btn mt-6 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
                             Gửi Tới Các Vì Sao
                         </button>
                         <p id="wish-confirmation" class="text-green-500 font-bold mt-4 h-6 text-center"></p>
@@ -983,25 +1044,24 @@
                 </div>
             </section>
 
-            <!-- Khoảnh khắc của chúng ta -->
-            <section class="mb-12" style="margin-top: 6rem;">
-                <h3 class="font-dancing text-5xl text-center text-pink-500 mb-12">Khoảnh khắc của chúng ta</h3>
-                <div class="moments-gallery">
-                    <div class="moment-photo"><img src="3.JPG" alt="Ảnh kỷ niệm 1"></div>
-                    <div class="moment-photo"><img src="2.jpg" alt="Ảnh kỷ niệm 2"></div>
-                    <div class="moment-photo"><img src="4.jpg" alt="Ảnh kỷ niệm 3"></div>
-                </div>
-            </section>
-
             <!-- Trò chơi thổi nến -->
             <section class="candle-game-container">
                 <h3 class="font-dancing text-4xl text-pink-500 mb-6">Thổi nến sinh nhật</h3>
-                <p class="blow-instruction"></p>
+                <p class="blow-instruction">Hãy thổi thật mạnh vào micro để thổi nến!</p>
+                <div class="mic-status">
+                    <div class="mic-icon">🎤</div>
+                    <span id="mic-status-text">Chưa kết nối</span>
+                </div>
+                <!-- Thanh đo lực thổi mới -->
+                <div class="blow-meter">
+                    <div class="blow-level"></div>
+                    <div class="blow-threshold"></div>
+                    <div class="blow-threshold"></div>
+                </div>
                 <br>
                 <br>
                 <br>
                 <br>
-
                 <div class="cake">
                     <div class="candle" style="left: 30%;">
                         <div class="flame" style="left: -2px;" id="flame-1"></div>
@@ -1013,18 +1073,29 @@
                         <div class="flame" style="left: -2px;" id="flame-3"></div>
                     </div>
                 </div>
-                
-                <button id="blow-button" class="blow-button">Thổi nến</button>
-                <p id="blow-result" class="mt-4 font-bold text-pink-500"></p>
+                <button id="start-mic-btn" class="btn mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
+                    Bắt đầu Thổi
+                </button>
+                <p id="blow-result" class="blow-result"></p>
                 <p id="candle-counter" class="candle-counter">Còn 3 cây nến cháy</p>
             </section>
 
-            <!-- Lời Động Viên Từ AI (Thiết kế mới) -->
+            <!-- Khoảnh khắc của chúng ta -->
+            <section class="mb-12" style="margin-top: 6rem;">
+                <h3 class="font-dancing text-5xl text-center text-pink-500 mb-12">Khoảnh khắc của chúng ta</h3>
+                <div class="moments-gallery">
+                    <div class="moment-photo"><img src=3.JPG alt="Ảnh kỷ niệm 1"></div>
+                    <div class="moment-photo"><img src=2.jpg alt="Ảnh kỷ niệm 2"></div>
+                    <div class="moment-photo"><img src=4.jpg alt="Ảnh kỷ niệm 3"></div>
+                </div>
+            </section>
+
+            <!-- Lời Động Viên Từ AI -->
             <section class="text-center mt-20">
                 <div class="encouragement-container">
                     <h3 class="font-dancing">Góc Động Viên</h3>
                     <p class="text-gray-600 mb-8">Trong cuộc sống, sẽ không thể tránh khỏi những khoảnh khắc cô đơn, thất vọng,... Hãy để những lời động viên nhỏ nàyy tiếp thêm sức mạnh cho cậu</p>
-                    <button id="generateEncouragementBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    <button id="generateEncouragementBtn" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
                         Nhận Lời Động Viên 💖
                     </button>
                     <div id="encouragementResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic flex items-center justify-center">
@@ -1036,12 +1107,12 @@
                 </div>
             </section>
             
-            <!-- [MỚI] Bói Vui Sinh Nhật (Thiết kế mới) -->
+            <!-- Bói Vui Sinh Nhật -->
             <section class="text-center mt-20">
                 <div class="fortune-container">
                     <h3 class="font-dancing">Bói Vui Tuổi Mới</h3>
                     <p class="text-gray-700 mb-8">Hé lộ một chút "thiên cơ" về tuổi 18 của cậu nào. Chỉ để cho vui thôi nhé!</p>
-                    <button id="generateFortuneBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    <button id="generateFortuneBtn" class="btn bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
                         Xem Vận Mệnh Tuổi Mới! 🔮
                     </button>
                     <div id="fortuneResult" class="mt-6 p-6 bg-white rounded-lg shadow-inner min-h-[120px] text-gray-700 italic flex items-center justify-center">
@@ -1056,7 +1127,7 @@
             <!-- Góc Bí Mật -->
             <section class="text-center mt-20">
                 <div class="tooltip">
-                    <button id="openSecretBtn" class="bg-transparent border-none cursor-pointer group">
+                    <button id="openSecretBtn" class="btn bg-transparent border-none cursor-pointer group">
                          <svg class="h-16 w-16 text-gray-400 group-hover:text-pink-400 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                         </svg>
@@ -1069,8 +1140,12 @@
     
     <!-- Audio Element -->
     <audio id="birthday-song" src="hpbd.mp3"></audio>
-    <audio id="blow-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wind-whistling-1240.mp3"></audio>
-    <audio id="candle-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-candle-flame-woosh-1171.mp3"></audio>
+    <!-- Âm thanh cho các hiệu ứng -->
+    <audio id="ting-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+    <audio id="paper-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-page-turn-sound-1106.mp3"></audio>
+    <audio id="sparkle-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkles-3000.mp3"></audio>
+    <audio id="blow-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wind-whistling-1246.mp3"></audio>
+    <audio id="candle-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-candle-burning-1242.mp3"></audio>
 
     <!-- Image Lightbox -->
     <div id="lightbox" class="hidden">
@@ -1087,7 +1162,7 @@
                 <input type="password" id="passwordInput" class="w-full p-3 border-2 border-pink-200 rounded-lg text-center text-lg tracking-widest focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition" placeholder="••••••••">
             </div>
             <p id="passwordError" class="text-red-500 text-sm mt-2 h-5"></p>
-            <button id="submitPasswordBtn" class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+            <button id="submitPasswordBtn" class="btn mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
                 Mở Khóa
             </button>
             <button id="closePasswordBtn" class="absolute top-2 right-4 text-gray-400 hover:text-gray-700 text-3xl">×</button>
@@ -1108,9 +1183,8 @@
                     <p>Bước sang tuổi 18 - tuổi bước ngoặt của cuộc đời, một sự khởi đầu cho hành trình trưởng thành, nơi m sẽ tự viết nên câu chuyện cuộc đời của mình, lúc m có những ước mơ, trách nhiệm và tự do. Chúc Quỳnh Nhi sức khoẻ dồi dào, ăn uống đầy đủ, học hành thuận lợi, may mắn đong đầy, vạn sự như ý, tỷ sự như mơ, triệu triệu bất ngờ và ngập tràn hành phúc 🎉</p>
                     <p>Từ ngày hôm nay m đã là 1 người lớn, có những suy nghĩ khác đi, phải đối mặt với những quyết định mang tính thay đổi cả 1 đời. Dù không thể tránh khỏi có nhiều lúc có cảm thấy bất lực, thất vọng nhưng luôn mong m có thể tự tin vào bản thân, vào trực giác của mình, có thể vững vàng đối diện với tất cả khó khăn thử thách. 
 Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
-                    <p>Một ngày nào đó nếu m cảm thấy bản thân mình thật nhỏ bé, cảm thấy thất vọng thì hãy nhớ rằng có 1 người tốt với m bằng tất cả những gì mà nó có, luôn tự hào vì những thành tích mà m đạt được, sẵn sàng động viên an ủi bất cứ lúc nào. Trước đến nay luôn ở đó và mãi như vậy ...</p>
                     <p>Dù không biết sau này xa hay gần, mọi chuyện như thế nào nhưng t mong rằng mọi thứ luôn suôn sẻ.</p>
-                    <p>Người ta nói rằng cứ một vạn chiếc cỏ ba lá, mới có một chiếc cỏ bốn lá. Giống như giữa bao nhiêu người, t với m lại gặp được nhau. T mong món quà nhỏ này luôn nhắc m hãy tin tưởng vào bản thân, sống trọn vẹn với tình yêu thương và may mắn. Hy vọng đây sẽ là 1 bất li thân, luôn bên cạnh âm thầm cổ vũ m vượt qua khó khăn. Nếu 1 ngày cảm thấy mỏi mệt, hãy nhìn chiếc vòng nhỏ này, nó sẽ thay t nhắc với m rằng: m xứng đáng với tất cả những gì có trên đời ❤️</p>
+                    <p>Người ta nói rằng cứ một vạn chiếc cỏ ba lá, mới có một chiếc cỏ bốn lá. Giống như giữa bao nhiêu người, t với m lại gặp được nhau. T mong món quà nhỏ này luôn nhắc m hãy tin tưởng vào bản thân, sống trọn vẹn với tình yêu thương và may mắn. Hy vọng đây sẽ là 1 người bạn tinh thần, luôn bên cạnh âm thầm cổ vũ m vượt qua khó khăn. Nếu 1 ngày cảm thấy mỏi mệt, hãy nhìn chiếc vòng nhỏ này, nó sẽ thay t nhắc với m rằng: m xứng đáng với tất cả những gì có trên đời ❤️</p>
                 </div>
             </div>
         </div>
@@ -1125,6 +1199,9 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Biến toàn cục lưu điều ước
+            let userWish = '';
+            
             // Tạo hiệu ứng lấp lánh background
             function createTwinkles() {
                 const container = document.createElement('div');
@@ -1160,17 +1237,34 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
             
             createTwinkles();
 
-            // Hiệu ứng parallax
-            window.addEventListener('scroll', function() {
-                const scrollY = window.scrollY;
-                const parallaxLayers = document.querySelectorAll('.parallax-layer');
-                
-                parallaxLayers.forEach((layer, index) => {
-                    const speed = index === 0 ? 0.1 : 0.2;
-                    layer.style.transform = `translateY(${scrollY * speed}px)`;
+            // Phát âm thanh ting
+            function playTingSound() {
+                const tingSound = document.getElementById('ting-sound');
+                tingSound.currentTime = 0;
+                tingSound.play();
+            }
+            
+            // Phát âm thanh giấy
+            function playPaperSound() {
+                const paperSound = document.getElementById('paper-sound');
+                paperSound.currentTime = 0;
+                paperSound.play();
+            }
+            
+            // Phát âm thanh lấp lánh
+            function playSparkleSound() {
+                const sparkleSound = document.getElementById('sparkle-sound');
+                sparkleSound.currentTime = 0;
+                sparkleSound.play();
+            }
+            
+            // Gán âm thanh ting cho tất cả các nút
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', () => {
+                    playTingSound();
                 });
             });
-            
+
             const introOverlay = document.getElementById('intro-overlay');
             const mainContent = document.getElementById('main-content');
             const showWishBtn = document.getElementById('showWishBtn');
@@ -1196,6 +1290,12 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 }
 
                 introOverlay.classList.add('open');
+
+                // Ẩn dòng chữ "Nhấn vào để thấy điều bất ngờ"
+                document.querySelector('.intro-text').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.intro-text').style.display = 'none';
+                }, 500);
 
                 // Hiệu ứng pháo hoa
                 if (typeof confetti === 'function') {
@@ -1274,7 +1374,7 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 });
             }
 
-            // --- [MỚI & TỐI ƯU] Hộp Điều Ước ---
+            // --- Hộp Điều Ước ---
             const sendWishBtn = document.getElementById('send-wish-btn');
             const wishInput = document.getElementById('user-wish-input');
             const wishBoxContainer = document.getElementById('wish-box-container');
@@ -1286,16 +1386,22 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                     return;
                 }
                 
+                // Lưu điều ước vào biến toàn cục
+                userWish = wishInput.value.trim();
+                
+                // Phát âm thanh ting
+                playTingSound();
+                
                 // Tạo hiệu ứng trái tim bay
                 for (let i = 0; i < 15; i++) {
                     createFlyingHeart();
                 }
+                
+                // Phát âm thanh lấp lánh
+                playSparkleSound();
 
                 wishInput.value = '';
-                wishConfirmation.textContent = 'Điều ước của cậu đã được gửi đi! ✨';
-                setTimeout(() => {
-                    wishConfirmation.textContent = '';
-                }, 3000);
+                wishConfirmation.textContent = '';
             });
 
             function createFlyingHeart() {
@@ -1334,7 +1440,7 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 generateEncouragementBtn.disabled = true;
                 generateEncouragementBtn.innerHTML = 'Đang viết...';
 
-                const prompt = 'Viết một lời động viên ngắn gọn, chân thành gửi đến Quỳnh Nhi. Dùng từ ngữ đơn giản, tự nhiên, giống như bạn bè nói chuyện với nhau. Tránh dùng lời lẽ hoa mỹ hay sến. Ví dụ: "Có gì cứ nói, mình nghe đây" hoặc "Mọi chuyện rồi cũng qua thôi, đừng tự ép mình quá". Kèm theo một vài emoji động viên dễ thương. Không thêm hướng dẫn hay chú thích.';
+                const prompt = 'Viết một lời động viên ngắn gọn, chân thành gửi đến Quỳnh Nhi. Dùng từ ngữ đơn giản, tự nhiên, kèm theo một vài emoji động viên dễ thương. Không thêm hướng dẫn hay chú thích.';
                 
                 try {
                     const generatedText = await callGeminiAPI(prompt);
@@ -1350,7 +1456,7 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 }
             });
             
-            // --- [MỚI] Bói Vui Sinh Nhật ---
+            // --- Bói Vui Sinh Nhật ---
             const generateFortuneBtn = document.getElementById('generateFortuneBtn');
             const fortuneTextP = document.getElementById('fortuneText');
             const fortuneLoading = document.getElementById('fortuneLoading');
@@ -1434,6 +1540,7 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                     closePasswordModal();
                     setTimeout(() => {
                         secretModal.classList.remove('hidden');
+                        playPaperSound();
                     }, 100); 
                 } else {
                     passwordError.textContent = 'Mật khẩu không đúng. Thử lại nhé!';
@@ -1570,73 +1677,188 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                 }
             });
             
-            // --- Trò chơi thổi nến ---
-            const blowButton = document.getElementById('blow-button');
+            // --- Trò chơi thổi nến bằng microphone ---
+            const startMicBtn = document.getElementById('start-mic-btn');
             const blowResult = document.getElementById('blow-result');
             const candleCounter = document.getElementById('candle-counter');
             const blowSound = document.getElementById('blow-sound');
             const candleSound = document.getElementById('candle-sound');
+            const micIcon = document.querySelector('.mic-icon');
+            const micStatusText = document.getElementById('mic-status-text');
             const flames = [
                 document.getElementById('flame-1'),
                 document.getElementById('flame-2'),
                 document.getElementById('flame-3')
             ];
+            const blowMeter = document.querySelector('.blow-meter');
+            const blowLevel = document.querySelector('.blow-level');
             
             let candlesBlown = 0;
+            let audioContext;
+            let analyser;
+            let microphone;
+            let isBlowing = false;
+            let blowIntensity = 0;
+            let maxBlowLevel = 0;
+            let blowInterval;
             
-            blowButton.addEventListener('click', () => {
-                blowResult.textContent = '';
-                blowSound.currentTime = 0;
-                blowSound.play();
+            async function setupMicrophone() {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 256;
+                    
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                    microphone = audioContext.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    
+                    micIcon.classList.add('active');
+                    micStatusText.textContent = 'Sẵn sàng - hãy thổi mạnh!';
+                    
+                    // Ẩn nút bắt đầu thổi
+                    startMicBtn.style.display = 'none';
+                    
+                    // Hiển thị thanh đo lực thổi
+                    blowMeter.style.display = 'block';
+                    
+                    // Bắt đầu phân tích âm thanh
+                    analyzeMicrophone();
+                } catch (error) {
+                    console.error("Lỗi truy cập microphone:", error);
+                    micStatusText.textContent = 'Không thể truy cập microphone';
+                    startMicBtn.textContent = 'Thử lại';
+                    startMicBtn.disabled = false;
+                }
+            }
+            
+            function analyzeMicrophone() {
+                if (!analyser) return;
                 
-                // Hiệu ứng thổi
-                blowButton.disabled = true;
-                blowButton.textContent = 'Đang thổi...';
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
                 
-                setTimeout(() => {
-                    // Tắt lửa ngẫu nhiên
-                    const flameToBlow = Math.floor(Math.random() * flames.length);
-                    if (flames[flameToBlow].style.display !== 'none') {
-                        flames[flameToBlow].style.display = 'none';
-                        candlesBlown++;
-                        candleSound.currentTime = 0;
-                        candleSound.play();
+                function checkBlowing() {
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    // Tính toán cường độ âm thanh
+                    let sum = 0;
+                    for (let i = 0; i < bufferLength; i++) {
+                        sum += dataArray[i];
+                    }
+                    const average = sum / bufferLength;
+                    
+                    // Cập nhật thanh đo lực thổi
+                    const blowPercentage = Math.min(100, average);
+                    blowLevel.style.width = `${blowPercentage}%`;
+                    
+                    // Nếu cường độ đủ mạnh (thổi)
+                    if (average > 50) {
+                        blowIntensity++;
                         
-                        // Cập nhật đếm nến
-                        const remainingCandles = flames.length - candlesBlown;
-                        candleCounter.textContent = `Còn ${remainingCandles} cây nến cháy`;
+                        // Cập nhật giá trị thổi lớn nhất
+                        if (average > maxBlowLevel) {
+                            maxBlowLevel = average;
+                        }
                         
-                        if (candlesBlown === flames.length) {
-                            blowResult.textContent = 'Chúc mừng! Bạn đã thổi tắt tất cả nến! 🎂';
-                            blowResult.style.color = '#4CAF50';
-                            
-                            // Pháo hoa
-                            if (typeof confetti === 'function') {
-                                confetti({
-                                    particleCount: 150,
-                                    spread: 70,
-                                    origin: { y: 0.6 }
-                                });
-                            }
-                            
-                            setTimeout(() => {
-                                // Reset nến
-                                flames.forEach(flame => flame.style.display = 'block');
-                                candlesBlown = 0;
-                                candleCounter.textContent = `Còn ${flames.length} cây nến cháy`;
-                            }, 3000);
-                        } else {
-                            blowResult.textContent = `Bạn đã thổi tắt ${candlesBlown} cây nến!`;
-                            blowResult.style.color = '#f48fb1';
+                        // Phát âm thanh gió nếu chưa đang thổi
+                        if (!isBlowing) {
+                            isBlowing = true;
+                            blowSound.currentTime = 0;
+                            blowSound.play();
                         }
                     } else {
-                        blowResult.textContent = 'Hãy thử lại!';
-                        blowResult.style.color = '#f48fb1';
+                        // Khi ngừng thổi
+                        if (isBlowing) {
+                            blowSound.pause();
+                            
+                            // Kiểm tra mức độ thổi
+                            if (maxBlowLevel >= 130) {
+                                blowOutCandles(3);
+                            } else if (maxBlowLevel >= 100) {
+                                blowOutCandles(2);
+                            } else if (maxBlowLevel >= 60) {
+                                blowOutCandles(1);
+                            }
+                            
+                            // Reset các giá trị
+                            maxBlowLevel = 0;
+                            isBlowing = false;
+                        }
+                        blowIntensity = Math.max(0, blowIntensity - 0.5);
                     }
                     
-                    blowButton.disabled = false;
-                    blowButton.textContent = 'Thổi nến';
-                }, 1500);
+                    requestAnimationFrame(checkBlowing);
+                }
+                
+                checkBlowing();
+            }
+            
+            function blowOutCandles(count) {
+                let blown = 0;
+                
+                // Tắt nến theo số lượng yêu cầu
+                for (let i = 0; i < flames.length && blown < count; i++) {
+                    if (flames[i].style.display !== 'none') {
+                        flames[i].style.display = 'none';
+                        blown++;
+                        candleSound.currentTime = 0;
+                        candleSound.play();
+                        candlesBlown++;
+                    }
+                }
+                
+                // Cập nhật đếm nến
+                const remainingCandles = flames.length - candlesBlown;
+                candleCounter.textContent = `Còn ${remainingCandles} cây nến cháy`;
+                
+                // Kiểm tra nếu tất cả nến đã tắt
+                if (candlesBlown === flames.length) {
+                    // Dừng microphone
+                    if (microphone && microphone.mediaStream) {
+                        microphone.mediaStream.getTracks().forEach(track => track.stop());
+                    }
+                    
+                    // Hiển thị kết quả điều ước
+                    blowResult.textContent = `Điều ước "${userWish}" đã thành sự thật ✨`;
+                    blowResult.style.color = '#4CAF50';
+                    
+                    // Ẩn thanh đo lực và dòng đếm nến
+                    blowMeter.style.display = 'none';
+                    candleCounter.style.display = 'none';
+                    
+                    // Pháo hoa
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 150,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    }
+                    
+                    // Reset sau 5 giây
+                    setTimeout(() => {
+                        flames.forEach(flame => flame.style.display = 'block');
+                        candlesBlown = 0;
+                        candleCounter.textContent = `Còn ${flames.length} cây nến cháy`;
+                        candleCounter.style.display = 'block';
+                        blowResult.textContent = '';
+                        startMicBtn.style.display = 'inline-block';
+                    }, 5000);
+                } else {
+                    blowResult.textContent = `Bạn đã thổi tắt ${blown} cây nến!`;
+                    blowResult.style.color = '#f48fb1';
+                    
+                    // Reset sau 2 giây
+                    setTimeout(() => {
+                        blowResult.textContent = '';
+                    }, 2000);
+                }
+            }
+            
+            startMicBtn.addEventListener('click', () => {
+                startMicBtn.disabled = true;
+                startMicBtn.textContent = 'Đang kết nối...';
+                setupMicrophone();
             });
         });
     </script>
