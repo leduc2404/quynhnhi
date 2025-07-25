@@ -63,7 +63,8 @@
         
         .intro-text {
             text-align: center;
-            margin-bottom: 40px;
+            position: absolute;
+            top: 20%;
             max-width: 80%;
             transition: opacity 0.5s ease;
         }
@@ -82,7 +83,9 @@
         }
         
         .gift-container {
-            position: relative;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             width: 300px;
             height: 300px;
             perspective: 1000px;
@@ -90,8 +93,8 @@
         }
         
         @keyframes floatGift { 
-            0%, 100% { transform: translateY(0); } 
-            50% { transform: translateY(-20px); } 
+            0%, 100% { transform: translateY(-50%); } 
+            50% { transform: translateY(-55%); } 
         }
         
         .gift-box-base {
@@ -433,6 +436,8 @@
             color: #4a423f; 
             font-size: 1.5rem; 
             line-height: 1.5; 
+            white-space: normal;
+            word-wrap: break-word;
         }
         
         .secret-text p { 
@@ -940,6 +945,35 @@
             margin-top: 10px;
             font-weight: bold;
         }
+        
+        /* Thông báo bước tiếp theo */
+        #next-step-text {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ec407a;
+        }
+
+        /* Hiệu ứng cho micro */
+        .mic-icon {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        /* Hiệu ứng cho nến khi thổi */
+        .flame.blown {
+            animation: none !important;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body class="text-gray-700">
@@ -947,9 +981,17 @@
     <div id="intro-overlay">
         <div class="intro-text">
             <h1>Nhấn vào để thấy điều bất ngờ</h1>
+            <br>
+            <br>
             <p></p>
         </div>
+        <br>
+        <br>
+
         <div class="gift-container">
+            <br>
+            <br>
+
             <div class="gift-bow">
                  <svg viewBox="0 0 100 100"><path d="M 50 50 C 30 -10, 0 10, 40 50 L 50 60 Z" fill="#f06292"/><path d="M 50 50 C 70 -10, 100 10, 60 50 L 50 60 Z" fill="#f06292"/><circle cx="50" cy="50" r="15" fill="#fce4ec"/></svg>
             </div>
@@ -972,7 +1014,7 @@
             <!-- Ảnh và Lịch -->
             <section class="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 mb-20">
                 <div class="main-photo-container w-64 h-80 md:w-80 md:h-[420px] rounded-lg bg-white p-4 shadow-xl transform -rotate-3 transition-transform hover:rotate-0 hover:scale-105">
-                    <img src=1.jpg alt="Ảnh của Lê Quỳnh Nhi" class="w-full h-full object-cover border-2 border-gray-100">
+                    <img src="1.jpg" alt="Ảnh của Lê Quỳnh Nhi" class="w-full h-full object-cover border-2 border-gray-100">
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg text-center calendar-container">
                     <div class="halo"></div>
@@ -1040,6 +1082,7 @@
                             Gửi Tới Các Vì Sao
                         </button>
                         <p id="wish-confirmation" class="text-green-500 font-bold mt-4 h-6 text-center"></p>
+                        <p id="next-step-text" class="hidden text-center mt-4 text-pink-500 font-bold"></p>
                     </div>
                 </div>
             </section>
@@ -1047,22 +1090,21 @@
             <!-- Trò chơi thổi nến -->
             <section class="candle-game-container">
                 <h3 class="font-dancing text-4xl text-pink-500 mb-6">Thổi nến sinh nhật</h3>
-                <p class="blow-instruction">Hãy thổi thật mạnh vào micro để thổi nến!</p>
+                <p class="blow-instruction" id="blowInstruction">Hãy thổi thật mạnh vào micro để thổi nến!</p>
                 <div class="mic-status">
-                    <div class="mic-icon">🎤</div>
+                    <div class="mic-icon" id="micIcon">🎤</div>
                     <span id="mic-status-text">Chưa kết nối</span>
+                    <br>
+                    <br>
+                    <br>
+                    <br> 
                 </div>
-                <!-- Thanh đo lực thổi mới -->
                 <div class="blow-meter">
-                    <div class="blow-level"></div>
+                    <div class="blow-level" id="blowLevel"></div>
                     <div class="blow-threshold"></div>
                     <div class="blow-threshold"></div>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <div class="cake">
+                <div class="cake" style="margin-top: 4rem;">
                     <div class="candle" style="left: 30%;">
                         <div class="flame" style="left: -2px;" id="flame-1"></div>
                     </div>
@@ -1082,11 +1124,11 @@
 
             <!-- Khoảnh khắc của chúng ta -->
             <section class="mb-12" style="margin-top: 6rem;">
-                <h3 class="font-dancing text-5xl text-center text-pink-500 mb-12">Khoảnh khắc của chúng ta</h3>
+                <h3 class="font-dancing text-5xl text-center text-pink-500 mb-12">Khoảnh Khắc</h3>
                 <div class="moments-gallery">
-                    <div class="moment-photo"><img src=3.JPG alt="Ảnh kỷ niệm 1"></div>
-                    <div class="moment-photo"><img src=2.jpg alt="Ảnh kỷ niệm 2"></div>
-                    <div class="moment-photo"><img src=4.jpg alt="Ảnh kỷ niệm 3"></div>
+                    <div class="moment-photo"><img src="3.JPG" alt="Ảnh kỷ niệm 1"></div>
+                    <div class="moment-photo"><img src="2.jpg" alt="Ảnh kỷ niệm 2"></div>
+                    <div class="moment-photo"><img src="4.jpg" alt="Ảnh kỷ niệm 3"></div>
                 </div>
             </section>
 
@@ -1094,7 +1136,7 @@
             <section class="text-center mt-20">
                 <div class="encouragement-container">
                     <h3 class="font-dancing">Góc Động Viên</h3>
-                    <p class="text-gray-600 mb-8">Trong cuộc sống, sẽ không thể tránh khỏi những khoảnh khắc cô đơn, thất vọng,... Hãy để những lời động viên nhỏ nàyy tiếp thêm sức mạnh cho cậu</p>
+                    <p class="text-gray-600 mb-8">Trong cuộc sống, sẽ không thể tránh khỏi những khoảnh khắc cô đơn, thất vọng,... Hãy để những lời động viên nhỏ này tiếp thêm sức mạnh cho cậu</p>
                     <button id="generateEncouragementBtn" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
                         Nhận Lời Động Viên 💖
                     </button>
@@ -1111,7 +1153,7 @@
             <section class="text-center mt-20">
                 <div class="fortune-container">
                     <h3 class="font-dancing">Bói Vui Tuổi Mới</h3>
-                    <p class="text-gray-700 mb-8">Hé lộ một chút "thiên cơ" về tuổi 18 của cậu nào. Chỉ để cho vui thôi nhé!</p>
+                    <p class="text-gray-700 mb-8">Hé lộ một chút "thiên cơ" về tuổi 18 của cậu nào!</p>
                     <button id="generateFortuneBtn" class="btn bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105">
                         Xem Vận Mệnh Tuổi Mới! 🔮
                     </button>
@@ -1199,79 +1241,79 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Biến toàn cục lưu điều ước
+            // Biến toàn cục
             let userWish = '';
+            let typewriterSynth;
+            let openSound;
             
+            // Biến cho trò chơi thổi nến
+            let candlesBlown = 0;
+            let audioContext;
+            let analyser;
+            let microphone;
+            let stream;
+            let animationId;
+            let isGameCompleted = false;
+
+            // Lấy các element một lần để tối ưu
+            const introOverlay = document.getElementById('intro-overlay');
+            const introText = document.querySelector('.intro-text');
+            const mainContent = document.getElementById('main-content');
+            const showWishBtn = document.getElementById('showWishBtn');
+            const wishElement = document.getElementById('main-wish');
+            const nextStepText = document.getElementById('next-step-text');
+            
+            const startMicBtn = document.getElementById('start-mic-btn');
+            const blowResult = document.getElementById('blow-result');
+            const candleCounter = document.getElementById('candle-counter');
+            const blowSound = document.getElementById('blow-sound');
+            const candleSound = document.getElementById('candle-sound');
+            const micIcon = document.getElementById('micIcon');
+            const micStatusText = document.getElementById('mic-status-text');
+            const blowInstruction = document.getElementById('blowInstruction');
+            const blowLevelEl = document.getElementById('blowLevel');
+            const flames = [
+                document.getElementById('flame-1'),
+                document.getElementById('flame-2'),
+                document.getElementById('flame-3')
+            ];
+            const blowMeter = document.querySelector('.blow-meter');
+            
+            const wishTextContent = "Mừng Quỳnh Nhi bước sang tuổi 18 - một cột mốc đặc biệt đánh dấu cho sự khởi đầu mới. Chúc cậu luôn luôn vui vẻ, yêu đời, ngày càng thông minh, xinh đẹp và thành công trong cuộc sống 💖";
+
             // Tạo hiệu ứng lấp lánh background
             function createTwinkles() {
-                const container = document.createElement('div');
-                container.classList.add('twinkling-background');
-                
+                const container = document.body;
                 const numStars = 100;
                 for (let i = 0; i < numStars; i++) {
                     const twinkle = document.createElement('div');
                     twinkle.classList.add('twinkle');
-                    
-                    // Random position
-                    const x = Math.random() * 100;
-                    const y = Math.random() * 100;
-                    twinkle.style.left = `${x}%`;
-                    twinkle.style.top = `${y}%`;
-                    
-                    // Random size (1px to 3px)
+                    twinkle.style.left = `${Math.random() * 100}%`;
+                    twinkle.style.top = `${Math.random() * 100}%`;
                     const size = Math.random() * 2 + 1;
                     twinkle.style.width = `${size}px`;
                     twinkle.style.height = `${size}px`;
-                    
-                    // Random animation duration and delay
-                    const duration = Math.random() * 3 + 2; // 2-5s
+                    const duration = Math.random() * 3 + 2;
                     const delay = Math.random() * 5;
                     twinkle.style.animationDuration = `${duration}s`;
                     twinkle.style.animationDelay = `${delay}s`;
-                    
                     container.appendChild(twinkle);
                 }
-                
-                document.body.appendChild(container);
             }
-            
             createTwinkles();
 
-            // Phát âm thanh ting
-            function playTingSound() {
-                const tingSound = document.getElementById('ting-sound');
-                tingSound.currentTime = 0;
-                tingSound.play();
+            // --- Quản lý âm thanh ---
+            function playSound(soundId) {
+                const sound = document.getElementById(soundId);
+                if (sound) {
+                    sound.currentTime = 0;
+                    sound.play().catch(e => console.log(`Could not play sound ${soundId}:`, e));
+                }
             }
             
-            // Phát âm thanh giấy
-            function playPaperSound() {
-                const paperSound = document.getElementById('paper-sound');
-                paperSound.currentTime = 0;
-                paperSound.play();
-            }
-            
-            // Phát âm thanh lấp lánh
-            function playSparkleSound() {
-                const sparkleSound = document.getElementById('sparkle-sound');
-                sparkleSound.currentTime = 0;
-                sparkleSound.play();
-            }
-            
-            // Gán âm thanh ting cho tất cả các nút
             document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', () => {
-                    playTingSound();
-                });
+                button.addEventListener('click', () => playSound('ting-sound'));
             });
-
-            const introOverlay = document.getElementById('intro-overlay');
-            const mainContent = document.getElementById('main-content');
-            const showWishBtn = document.getElementById('showWishBtn');
-            const wishElement = document.getElementById('main-wish');
-            const wishTextContent = "Mừng Quỳnh Nhi bước sang tuổi 18 - một cột mốc đặc biệt đánh dấu cho sự khởi đầu mới. Chúc cậu luôn luôn vui vẻ, yêu đời, ngày càng thông minh, xinh đẹp và thành công trong cuộc sống 💖";
-            let typewriterSynth;
-            let openSound;
 
             // --- Xử lý mở hộp quà ---
             introOverlay.addEventListener('click', async () => {
@@ -1291,11 +1333,9 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
 
                 introOverlay.classList.add('open');
 
-                // Ẩn dòng chữ "Nhấn vào để thấy điều bất ngờ"
-                document.querySelector('.intro-text').style.opacity = '0';
-                setTimeout(() => {
-                    document.querySelector('.intro-text').style.display = 'none';
-                }, 500);
+                // Ẩn dòng chữ một cách mượt mà và không làm layout nhảy
+                introText.style.opacity = '0';
+                introText.style.pointerEvents = 'none'; // Ngăn tương tác với chữ đã ẩn
 
                 // Hiệu ứng pháo hoa
                 if (typeof confetti === 'function') {
@@ -1303,24 +1343,9 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                     const colors = ['#f48fb1', '#ec407a', '#f8bbd0', '#ffffff'];
 
                     (function frame() {
-                        confetti({
-                            particleCount: 2,
-                            angle: 60,
-                            spread: 55,
-                            origin: { x: 0 },
-                            colors: colors
-                        });
-                        confetti({
-                            particleCount: 2,
-                            angle: 120,
-                            spread: 55,
-                            origin: { x: 1 },
-                            colors: colors
-                        });
-
-                        if (Date.now() < end) {
-                            requestAnimationFrame(frame);
-                        }
+                        confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 }, colors });
+                        confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 }, colors });
+                        if (Date.now() < end) requestAnimationFrame(frame);
                     }());
                 }
 
@@ -1356,6 +1381,7 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                         i++;
                         setTimeout(type, speed);
                     } else if (callback) {
+                        element.classList.remove('typing');
                         callback();
                     }
                 };
@@ -1369,9 +1395,7 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                         envelope: { attack: 0.005, decay: 0.1, sustain: 0.01, release: 0.1 }
                     }).toDestination();
                 }
-                typeWriter(wishElement, wishTextContent, 80, () => {
-                    wishElement.classList.remove('typing');
-                });
+                typeWriter(wishElement, wishTextContent, 80, () => {});
             }
 
             // --- Hộp Điều Ước ---
@@ -1385,127 +1409,106 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                     wishInput.focus();
                     return;
                 }
-                
-                // Lưu điều ước vào biến toàn cục
                 userWish = wishInput.value.trim();
-                
-                // Phát âm thanh ting
-                playTingSound();
-                
-                // Tạo hiệu ứng trái tim bay
-                for (let i = 0; i < 15; i++) {
-                    createFlyingHeart();
-                }
-                
-                // Phát âm thanh lấp lánh
-                playSparkleSound();
-
+                playSound('sparkle-sound');
+                for (let i = 0; i < 15; i++) createFlyingHeart();
                 wishInput.value = '';
                 wishConfirmation.textContent = '';
+                
+                // Hiển thị thông báo bước tiếp theo
+                nextStepText.textContent = "Tiếp theo, hãy thổi nến mừng sinh nhật 🎂";
+                nextStepText.style.display = 'block';
+                
+                // Cuộn xuống phần thổi nến
+                setTimeout(() => {
+                    document.querySelector('.candle-game-container').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center'
+                    });
+                }, 1000);
             });
 
             function createFlyingHeart() {
                 const heart = document.createElement('div');
                 heart.classList.add('flying-heart');
                 heart.innerHTML = ['💖', '❤️', '💕', '✨', '⭐'][Math.floor(Math.random() * 5)];
-                
-                // Random hóa đường bay và góc xoay
                 const xDrift = (Math.random() - 0.5) * 100;
                 const rotation = (Math.random() - 0.5) * 40;
-                
                 heart.style.setProperty('--fly-x-drift', `${xDrift}px`);
                 heart.style.setProperty('--fly-rotation', `${rotation}deg`);
-
                 heart.style.left = `${Math.random() * 80 + 10}%`;
                 heart.style.animationDuration = `${Math.random() * 2 + 2}s`;
                 heart.style.animationDelay = `${Math.random() * 0.5}s`;
                 heart.style.color = ['#f48fb1', '#ec407a', '#f8bbd0', '#ffc107'][Math.floor(Math.random() * 4)];
-
                 wishBoxContainer.appendChild(heart);
-
-                // Dọn dẹp trái tim sau khi bay xong
-                setTimeout(() => {
-                    heart.remove();
-                }, 4500); 
+                setTimeout(() => heart.remove(), 4500); 
             }
 
-            // --- Lời Động Viên Từ AI ---
-            const generateEncouragementBtn = document.getElementById('generateEncouragementBtn');
-            const encouragementTextP = document.getElementById('encouragementText');
-            const encouragementLoading = document.getElementById('encouragementLoading');
-
-            generateEncouragementBtn.addEventListener('click', async () => {
-                encouragementTextP.classList.add('hidden');
-                encouragementLoading.classList.remove('hidden');
-                generateEncouragementBtn.disabled = true;
-                generateEncouragementBtn.innerHTML = 'Đang viết...';
-
-                const prompt = 'Viết một lời động viên ngắn gọn, chân thành gửi đến Quỳnh Nhi. Dùng từ ngữ đơn giản, tự nhiên, kèm theo một vài emoji động viên dễ thương. Không thêm hướng dẫn hay chú thích.';
-                
-                try {
-                    const generatedText = await callGeminiAPI(prompt);
-                    encouragementTextP.textContent = `"${generatedText}"`;
-                } catch (error) {
-                    console.error("Error calling Gemini API for encouragement:", error);
-                    encouragementTextP.textContent = "Oops! Có lỗi xảy ra. Nhưng hãy luôn nhớ rằng cậu rất tuyệt vời!";
-                } finally {
-                    encouragementLoading.classList.add('hidden');
-                    encouragementTextP.classList.remove('hidden');
-                    generateEncouragementBtn.disabled = false;
-                    generateEncouragementBtn.innerHTML = 'Nhận Lời Động Viên Khác 💖';
-                }
-            });
-            
-            // --- Bói Vui Sinh Nhật ---
-            const generateFortuneBtn = document.getElementById('generateFortuneBtn');
-            const fortuneTextP = document.getElementById('fortuneText');
-            const fortuneLoading = document.getElementById('fortuneLoading');
-
-            generateFortuneBtn.addEventListener('click', async () => {
-                fortuneTextP.classList.add('hidden');
-                fortuneLoading.classList.remove('hidden');
-                generateFortuneBtn.disabled = true;
-                generateFortuneBtn.innerHTML = 'Đang gieo quẻ...';
-
-                const prompt = 'Viết một lời tiên tri sinh nhật vui vẻ, hài hước, lạc quan cho một người bạn tên Quỳnh Nhi vừa tròn 18 tuổi. Giọng văn thân thiện, dí dỏm, mang tính tích cực. Không cần quá dài. Ví dụ: "Vũ trụ thì thầm rằng năm nay ví của bạn sẽ dày hơn một chút, và bụng sẽ vui hơn rất nhiều vì trà sữa!" hoặc "Một chuyến đi bất ngờ đang chờ đón bạn đó nha!". Kèm sticker phù hợp. Không thêm chú thích hay ký tự markdown.';
-                
-                try {
-                    const generatedText = await callGeminiAPI(prompt);
-                    fortuneTextP.textContent = `"${generatedText}"`;
-                } catch (error) {
-                    console.error("Error calling Gemini API for fortune:", error);
-                    fortuneTextP.textContent = "Quẻ bói hôm nay bị lỗi... Nhưng chắc chắn tuổi mới của cậu sẽ toàn là chuyện vui thôi!";
-                } finally {
-                    fortuneLoading.classList.add('hidden');
-                    fortuneTextP.classList.remove('hidden');
-                    generateFortuneBtn.disabled = false;
-                    generateFortuneBtn.innerHTML = 'Xem Vận Mệnh Tuổi Mới! 🔮';
-                }
-            });
-            
-            // Hàm gọi API chung
+            // --- Lời Động Viên & Bói Vui (Gemini API) ---
             async function callGeminiAPI(promptText) {
-                let chatHistory = [{ role: "user", parts: [{ text: promptText }] }];
-                const payload = { contents: chatHistory };
                 const apiKey = "AIzaSyDLbXYlcOqZQPBIE8UwiUvEgKLVeS2WkhA";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ role: "user", parts: [{ text: promptText }] }] };
                 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error(`API call failed: ${response.status}`);
-
-                const result = await response.json();
-                if (result.candidates?.[0]?.content?.parts?.[0]) {
-                    return result.candidates[0].content.parts[0].text.replace(/\*\*/g, '');
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+                    const result = await response.json();
+                    if (result.candidates?.[0]?.content?.parts?.[0]) {
+                        return result.candidates[0].content.parts[0].text.replace(/\*\*/g, '');
+                    }
+                    throw new Error("No content generated");
+                } catch (error) {
+                    console.error("Gemini API Error:", error);
+                    throw error; // Re-throw để hàm gọi xử lý
                 }
-                throw new Error("No content generated");
+            }
+            
+            // Hàm trợ giúp cho các nút gọi API
+            function setupApiButton(btnId, loadingId, textId, resultPId, prompt, errorMsg, finalBtnText) {
+                const btn = document.getElementById(btnId);
+                const loading = document.getElementById(loadingId);
+                const textP = document.getElementById(textId);
+
+                btn.addEventListener('click', async () => {
+                    textP.classList.add('hidden');
+                    loading.classList.remove('hidden');
+                    btn.disabled = true;
+                    btn.innerHTML = 'Đang xử lý...';
+                    
+                    try {
+                        const generatedText = await callGeminiAPI(prompt);
+                        textP.textContent = `"${generatedText}"`;
+                    } catch (error) {
+                        textP.textContent = errorMsg;
+                    } finally {
+                        loading.classList.add('hidden');
+                        textP.classList.remove('hidden');
+                        btn.disabled = false;
+                        btn.innerHTML = finalBtnText;
+                    }
+                });
             }
 
-            // --- Xử lý Vùng An Toàn (Mật khẩu & Modal) ---
+            setupApiButton(
+                'generateEncouragementBtn', 'encouragementLoading', 'encouragementText', 'encouragementResult',
+                'Viết một lời động viên ngắn gọn, chân thành gửi đến Quỳnh Nhi. Dùng từ ngữ đơn giản, tự nhiên, kèm theo một vài emoji động viên dễ thương. Không thêm hướng dẫn hay chú thích.',
+                "Oops! Có lỗi xảy ra. Nhưng hãy luôn nhớ rằng cậu rất tuyệt vời!",
+                'Nhận Lời Động Viên Khác 💖'
+            );
+
+            setupApiButton(
+                'generateFortuneBtn', 'fortuneLoading', 'fortuneText', 'fortuneResult',
+                'Viết một lời tiên tri sinh nhật vui vẻ, hài hước, lạc quan cho một người bạn tên Quỳnh Nhi vừa tròn 18 tuổi. Giọng văn thân thiện, dí dỏm, mang tính tích cực. Không cần quá dài. Ví dụ: "Vũ trụ thì thầm rằng năm nay ví của bạn sẽ dày hơn một chút, và bụng sẽ vui hơn rất nhiều vì trà sữa!" hoặc "Một chuyến đi bất ngờ đang chờ đón bạn đó nha!". Kèm sticker phù hợp. Không thêm chú thích hay ký tự markdown.',
+                "Quẻ bói hôm nay bị lỗi... Nhưng chắc chắn tuổi mới của cậu sẽ toàn là chuyện vui thôi!",
+                'Xem Vận Mệnh Tuổi Mới! 🔮'
+            );
+
+            // --- Vùng An Toàn (Mật khẩu & Modal) ---
             const openSecretBtn = document.getElementById('openSecretBtn');
             const secretModal = document.getElementById('secretModal');
             const closeSecretBtn = document.getElementById('closeSecretBtn');
@@ -1515,81 +1518,52 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
             const passwordInput = document.getElementById('passwordInput');
             const submitPasswordBtn = document.getElementById('submitPasswordBtn');
             const passwordError = document.getElementById('passwordError');
-            
             const correctPassword = '26072007';
 
-            openSecretBtn.addEventListener('click', () => {
+            function openPasswordModal() {
                 passwordModal.classList.remove('hidden');
                 passwordInput.focus();
-            });
+            }
 
             function closePasswordModal() {
                 passwordModal.classList.add('hidden');
                 passwordError.textContent = '';
                 passwordInput.value = '';
             }
-            closePasswordBtn.addEventListener('click', closePasswordModal);
-            passwordModal.addEventListener('click', (e) => {
-                if (e.target === passwordModal) {
-                    closePasswordModal();
-                }
-            });
-
+            
             function checkPassword() {
                 if (passwordInput.value === correctPassword) {
                     closePasswordModal();
                     setTimeout(() => {
                         secretModal.classList.remove('hidden');
-                        playPaperSound();
+                        playSound('paper-sound');
                     }, 100); 
                 } else {
                     passwordError.textContent = 'Mật khẩu không đúng. Thử lại nhé!';
                     passwordModalContent.classList.add('shake');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                    setTimeout(() => {
-                        passwordModalContent.classList.remove('shake');
-                    }, 500);
+                    setTimeout(() => passwordModalContent.classList.remove('shake'), 500);
                 }
             }
-            submitPasswordBtn.addEventListener('click', checkPassword);
-            passwordInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
 
-            closeSecretBtn.addEventListener('click', () => {
-                secretModal.classList.add('hidden');
-            });
-            secretModal.addEventListener('click', (e) => {
-                if (e.target === secretModal) {
-                    secretModal.classList.add('hidden');
-                }
-            });
+            openSecretBtn.addEventListener('click', openPasswordModal);
+            closePasswordBtn.addEventListener('click', closePasswordModal);
+            passwordModal.addEventListener('click', (e) => e.target === passwordModal && closePasswordModal());
+            submitPasswordBtn.addEventListener('click', checkPassword);
+            passwordInput.addEventListener('keydown', (e) => e.key === 'Enter' && checkPassword());
+            closeSecretBtn.addEventListener('click', () => secretModal.classList.add('hidden'));
+            secretModal.addEventListener('click', (e) => e.target === secretModal && secretModal.classList.add('hidden'));
 
             // --- Image Lightbox ---
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
-            const lightboxClose = document.getElementById('lightbox-close');
-            const galleryImages = document.querySelectorAll('.moment-photo img');
-
-            galleryImages.forEach(image => {
+            document.querySelectorAll('.moment-photo img').forEach(image => {
                 image.addEventListener('click', () => {
                     lightboxImage.src = image.src;
                     lightbox.classList.remove('hidden');
                 });
             });
-
-            lightboxClose.addEventListener('click', () => {
-                lightbox.classList.add('hidden');
-            });
-
-             lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) {
-                    lightbox.classList.add('hidden');
-                }
-            });
+            document.getElementById('lightbox-close').addEventListener('click', () => lightbox.classList.add('hidden'));
+            lightbox.addEventListener('click', (e) => e.target === lightbox && lightbox.classList.add('hidden'));
 
             // --- Music Player Logic ---
             const audio = document.getElementById('birthday-song');
@@ -1622,125 +1596,98 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
             audio.addEventListener('timeupdate', () => {
                 const { currentTime, duration } = audio;
                 if (duration) {
-                    const progressPercent = (currentTime / duration) * 100;
-                    progress.style.width = `${progressPercent}%`;
+                    progress.style.width = `${(currentTime / duration) * 100}%`;
                     currentTimeEl.textContent = formatTime(currentTime);
                 }
             });
-
             audio.addEventListener('loadedmetadata', () => {
                 durationEl.textContent = formatTime(audio.duration);
             });
-
             progressBar.addEventListener('click', (e) => {
                 const width = progressBar.clientWidth;
                 const clickX = e.offsetX;
-                const duration = audio.duration;
-                if (duration) {
-                    audio.currentTime = (clickX / width) * duration;
-                }
+                if (audio.duration) audio.currentTime = (clickX / width) * audio.duration;
             });
             
-            // --- Nút Lên Đầu Trang ---
+            // --- Nút Lên Đầu Trang & Easter Egg ---
             const backToTopBtn = document.getElementById('back-to-top');
-            
             window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    backToTopBtn.classList.add('visible');
-                } else {
-                    backToTopBtn.classList.remove('visible');
-                }
+                backToTopBtn.classList.toggle('visible', window.pageYOffset > 300);
             });
+            backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
             
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // --- Easter Egg: Click vào tên ---
-            const birthdayGirl = document.getElementById('birthday-girl');
-            
-            birthdayGirl.addEventListener('click', () => {
+            document.getElementById('birthday-girl').addEventListener('click', (e) => {
                 if (typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 }
-                    });
-                    
-                    birthdayGirl.classList.add('glow-text');
-                    setTimeout(() => {
-                        birthdayGirl.classList.remove('glow-text');
-                    }, 1000);
+                    const rect = e.target.getBoundingClientRect();
+                    const x = (rect.left + rect.right) / 2 / window.innerWidth;
+                    const y = (rect.top + rect.bottom) / 2 / window.innerHeight;
+                    confetti({ particleCount: 150, spread: 70, origin: { x, y } });
                 }
             });
             
-            // --- Trò chơi thổi nến bằng microphone ---
-            const startMicBtn = document.getElementById('start-mic-btn');
-            const blowResult = document.getElementById('blow-result');
-            const candleCounter = document.getElementById('candle-counter');
-            const blowSound = document.getElementById('blow-sound');
-            const candleSound = document.getElementById('candle-sound');
-            const micIcon = document.querySelector('.mic-icon');
-            const micStatusText = document.getElementById('mic-status-text');
-            const flames = [
-                document.getElementById('flame-1'),
-                document.getElementById('flame-2'),
-                document.getElementById('flame-3')
-            ];
-            const blowMeter = document.querySelector('.blow-meter');
-            const blowLevel = document.querySelector('.blow-level');
-            
-            let candlesBlown = 0;
-            let audioContext;
-            let analyser;
-            let microphone;
-            let isBlowing = false;
-            let blowIntensity = 0;
-            let maxBlowLevel = 0;
-            let blowInterval;
-            
+            // --- TRÒ CHƠI THỔI NẾN (PHIÊN BẢN CẬP NHẬT) ---
             async function setupMicrophone() {
                 try {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    // Tạo AudioContext nếu chưa có
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    
+                    // Yêu cầu quyền truy cập micro
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: {
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            autoGainControl: false
+                        }, 
+                        video: false 
+                    });
+                    
+                    // Thiết lập phân tích âm thanh
                     analyser = audioContext.createAnalyser();
                     analyser.fftSize = 256;
-                    
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
                     microphone = audioContext.createMediaStreamSource(stream);
                     microphone.connect(analyser);
                     
-                    micIcon.classList.add('active');
+                    // Cập nhật giao diện
+                    micIcon.style.backgroundColor = '#ec407a';
                     micStatusText.textContent = 'Sẵn sàng - hãy thổi mạnh!';
-                    
-                    // Ẩn nút bắt đầu thổi
                     startMicBtn.style.display = 'none';
-                    
-                    // Hiển thị thanh đo lực thổi
                     blowMeter.style.display = 'block';
                     
-                    // Bắt đầu phân tích âm thanh
+                    // Bắt đầu phân tích
                     analyzeMicrophone();
-                } catch (error) {
-                    console.error("Lỗi truy cập microphone:", error);
-                    micStatusText.textContent = 'Không thể truy cập microphone';
-                    startMicBtn.textContent = 'Thử lại';
+                    
+                } catch (err) {
+                    console.error("Lỗi truy cập microphone:", err);
+                    
+                    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                        micStatusText.textContent = 'Bạn đã từ chối quyền truy cập micro.';
+                    } else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
+                        micStatusText.textContent = 'Không tìm thấy thiết bị micro.';
+                    } else {
+                        micStatusText.textContent = 'Không thể truy cập micro. Lỗi: ' + err.message;
+                    }
+                    
                     startMicBtn.disabled = false;
+                    startMicBtn.textContent = 'Thử lại';
                 }
             }
-            
+
+            // Hàm phân tích âm thanh từ micro
             function analyzeMicrophone() {
                 if (!analyser) return;
                 
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
+                let isBlowing = false;
+                let maxBlowLevel = 0;
                 
-                function checkBlowing() {
-                    analyser.getByteFrequencyData(dataArray);
+                // Kiểm tra xem có đang thổi không
+                const checkBlowing = () => {
+                    if (isGameCompleted) return;
                     
-                    // Tính toán cường độ âm thanh
+                    analyser.getByteFrequencyData(dataArray);
                     let sum = 0;
                     for (let i = 0; i < bufferLength; i++) {
                         sum += dataArray[i];
@@ -1748,113 +1695,117 @@ Luôn là 1 cô gái vui vẻ, yêu đời nhé 💓</p>
                     const average = sum / bufferLength;
                     
                     // Cập nhật thanh đo lực thổi
-                    const blowPercentage = Math.min(100, average);
-                    blowLevel.style.width = `${blowPercentage}%`;
+                    const level = Math.min(100, average * 1.5);
+                    blowLevelEl.style.width = `${level}%`;
                     
-                    // Nếu cường độ đủ mạnh (thổi)
-                    if (average > 50) {
-                        blowIntensity++;
-                        
-                        // Cập nhật giá trị thổi lớn nhất
-                        if (average > maxBlowLevel) {
-                            maxBlowLevel = average;
-                        }
-                        
-                        // Phát âm thanh gió nếu chưa đang thổi
+                    // Xác định ngưỡng thổi
+                    if (average > 40) {
                         if (!isBlowing) {
                             isBlowing = true;
                             blowSound.currentTime = 0;
-                            blowSound.play();
+                            blowSound.play().catch(e => console.log("Không thể phát âm thanh thổi:", e));
                         }
-                    } else {
-                        // Khi ngừng thổi
-                        if (isBlowing) {
-                            blowSound.pause();
-                            
-                            // Kiểm tra mức độ thổi
-                            if (maxBlowLevel >= 130) {
-                                blowOutCandles(3);
-                            } else if (maxBlowLevel >= 100) {
-                                blowOutCandles(2);
-                            } else if (maxBlowLevel >= 60) {
-                                blowOutCandles(1);
-                            }
-                            
-                            // Reset các giá trị
-                            maxBlowLevel = 0;
-                            isBlowing = false;
-                        }
-                        blowIntensity = Math.max(0, blowIntensity - 0.5);
+                        if (average > maxBlowLevel) maxBlowLevel = average;
+                    } else if (isBlowing) {
+                        blowSound.pause();
+                        isBlowing = false;
+                        
+                        // Xử lý thổi nến dựa trên lực thổi
+                        if (maxBlowLevel >= 100) blowOutCandles(3);
+                        else if (maxBlowLevel >= 70) blowOutCandles(2);
+                        else if (maxBlowLevel >= 45) blowOutCandles(1);
+                        
+                        maxBlowLevel = 0;
                     }
                     
-                    requestAnimationFrame(checkBlowing);
-                }
+                    // Tiếp tục vòng lặp nếu còn nến
+                    if (candlesBlown < flames.length) {
+                        animationId = requestAnimationFrame(checkBlowing);
+                    }
+                };
                 
-                checkBlowing();
+                // Bắt đầu vòng lặp
+                animationId = requestAnimationFrame(checkBlowing);
             }
-            
+
+            // Hàm thổi tắt nến
             function blowOutCandles(count) {
-                let blown = 0;
+                let blownThisTime = 0;
                 
-                // Tắt nến theo số lượng yêu cầu
-                for (let i = 0; i < flames.length && blown < count; i++) {
-                    if (flames[i].style.display !== 'none') {
-                        flames[i].style.display = 'none';
-                        blown++;
-                        candleSound.currentTime = 0;
-                        candleSound.play();
+                for (let i = 0; i < flames.length && blownThisTime < count; i++) {
+                    if (!flames[i].classList.contains('blown')) {
+                        flames[i].classList.add('blown');
+                        playSound('candle-sound');
                         candlesBlown++;
+                        blownThisTime++;
                     }
                 }
                 
-                // Cập nhật đếm nến
-                const remainingCandles = flames.length - candlesBlown;
-                candleCounter.textContent = `Còn ${remainingCandles} cây nến cháy`;
+                const remaining = flames.length - candlesBlown;
+                candleCounter.textContent = `Còn ${remaining} cây nến cháy`;
+                blowResult.textContent = `Bạn đã thổi tắt ${blownThisTime} cây nến!`;
+                blowResult.style.color = '#f57c00';
                 
-                // Kiểm tra nếu tất cả nến đã tắt
-                if (candlesBlown === flames.length) {
-                    // Dừng microphone
-                    if (microphone && microphone.mediaStream) {
-                        microphone.mediaStream.getTracks().forEach(track => track.stop());
-                    }
-                    
-                    // Hiển thị kết quả điều ước
-                    blowResult.textContent = `Điều ước "${userWish}" đã thành sự thật ✨`;
-                    blowResult.style.color = '#4CAF50';
-                    
-                    // Ẩn thanh đo lực và dòng đếm nến
-                    blowMeter.style.display = 'none';
-                    candleCounter.style.display = 'none';
-                    
-                    // Pháo hoa
-                    if (typeof confetti === 'function') {
-                        confetti({
-                            particleCount: 150,
-                            spread: 70,
-                            origin: { y: 0.6 }
-                        });
-                    }
-                    
-                    // Reset sau 5 giây
-                    setTimeout(() => {
-                        flames.forEach(flame => flame.style.display = 'block');
-                        candlesBlown = 0;
-                        candleCounter.textContent = `Còn ${flames.length} cây nến cháy`;
-                        candleCounter.style.display = 'block';
-                        blowResult.textContent = '';
-                        startMicBtn.style.display = 'inline-block';
-                    }, 5000);
+                if (remaining === 0) {
+                    completeGame();
                 } else {
-                    blowResult.textContent = `Bạn đã thổi tắt ${blown} cây nến!`;
-                    blowResult.style.color = '#f48fb1';
-                    
-                    // Reset sau 2 giây
                     setTimeout(() => {
                         blowResult.textContent = '';
                     }, 2000);
                 }
             }
-            
+
+            // Hàm hoàn thành trò chơi
+            function completeGame() {
+                isGameCompleted = true;
+                
+                // Dừng micro và giải phóng tài nguyên
+                stopMicrophone();
+                
+                // Ẩn các phần tử không cần thiết
+                blowMeter.style.display = 'none';
+                candleCounter.style.display = 'none';
+                blowInstruction.style.display = 'none';
+                startMicBtn.style.display = 'none';
+                
+                // Hiển thị thông báo cuối cùng
+                blowResult.textContent = `Giỏi quá, điều ước "${userWish || 'tốt lành'}" đã trở thành sự thật ✨`;
+                blowResult.style.color = '#4CAF50';
+                
+                // Hiệu ứng pháo hoa rực rỡ
+                if (typeof confetti === 'function') {
+                    confetti({ 
+                        particleCount: 500, 
+                        spread: 160, 
+                        origin: { y: 0.6 },
+                        colors: ['#f48fb1', '#ec407a', '#f8bbd0', '#ffffff']
+                    });
+                }
+            }
+
+            // Hàm dừng micro
+            function stopMicrophone() {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+                
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    stream = null;
+                }
+                
+                if (microphone) {
+                    microphone.disconnect();
+                    microphone = null;
+                }
+                
+                analyser = null;
+                micIcon.style.backgroundColor = '#f48fb1';
+                micStatusText.textContent = 'Hoàn thành!';
+            }
+
+            // Bắt đầu thổi khi nhấn nút
             startMicBtn.addEventListener('click', () => {
                 startMicBtn.disabled = true;
                 startMicBtn.textContent = 'Đang kết nối...';
